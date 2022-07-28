@@ -52,6 +52,4 @@ public class Agenda {
     public String toString() {
         return "Agenda{" + "listaDatasDisponiveis=" + listaDatasDisponiveis + ", listaDatasIndisponiveis=" + listaDatasIndisponiveis + '}';
     }    
-
-    
 }
