@@ -16,7 +16,7 @@ import java.util.Calendar;
 public class Agenda {
     private ArrayList <LocalDateTime> listaDatasDisponiveis = new ArrayList();
     private ArrayList <LocalDateTime> listaDatasIndisponiveis = new ArrayList();
-
+    
     public Agenda(ArrayList <LocalDateTime> datasDisponiveis) {
         this.listaDatasDisponiveis = datasDisponiveis; //22-05-2023 - 16:30
     }
