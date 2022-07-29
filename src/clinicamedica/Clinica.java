@@ -40,50 +40,17 @@ public class Clinica {
         return listaMedicamentos;
     }
     
+    @Override
+    public String toString() {
+        return "Clinica{" + "nome=" + nome + '}';
+    }
+    
+//    GERENCIA MEDICAMENTOS
+    
     public void mostrarListaMedicamentos(){
         for(Medicamento medica: listaMedicamentos){
             System.out.println(medica.toString());
         }
-    }
-    
-    public Paciente buscaPacientePeloNome(String nome){
-        for(Paciente pac: listaPacientes){
-            if(nome.equals(pac.getNome())){
-                return pac;
-            }
-        }
-        return null;
-    }
-    
-    public void cadastrarPaciente(Paciente a){
-        this.listaPacientes.add(a);
-    }
-    
-    public Medico buscaMedicoPeloNome(String nome){
-        for(Medico med: listaMedicos){
-            if(nome.equals(med.getNome())){
-                return med;
-            }
-        }
-        return null;
-    }
-    
-    public void cadastrarMedico(Medico a){
-        listaMedicos.add(a);
-    }
-    
-    public void agendarConsulta(Medico med, Paciente pac, LocalDateTime data){
-        boolean isDataDisponivel = med.getAgenda().marcarAgenda(data);
-        if(isDataDisponivel == true){
-            ConsultasAgendadas novaConsulta = new ConsultasAgendadas(med, pac, data);
-            med.getListaConsultasAgendadas().add(novaConsulta);
-        }else{
-            System.out.println("\n Data desejada nao existe ou nao esta disponivel \n");
-        } 
-    }
-    
-    public void atualizaHistoricoDoencaPaciente(Paciente pac, Doenca doen){
-        pac.adicionaDoenca(doen);
     }
     
     public void cadastraMedicamento(Medicamento a){
@@ -110,23 +77,73 @@ public class Clinica {
         }
     }
     
-    public ArrayList<RegistroConsulta> getRelatorioPaciente(Paciente pac){
+//    GERENCIA MEDICO
+    
+    public Medico buscaMedicoPeloNome(String nome){
+        for(Medico med: listaMedicos){
+            if(nome.equals(med.getNome())){
+                return med;
+            }
+        }
+        return null;
+    }
+    
+    public void cadastrarMedico(Medico a){
+        listaMedicos.add(a);
+    }
+    
+//    GERENCIA PACIENTE
+    
+    public Paciente buscaPacientePeloNome(String nome){
+        for(Paciente pac: listaPacientes){
+            if(nome.equals(pac.getNome())){
+                return pac;
+            }
+        }
+        return null;
+    }
+    
+    public void cadastrarPaciente(Paciente a){
+        this.listaPacientes.add(a);
+    }
+    
+    public void atualizaHistoricoDoencaPaciente(Paciente pac, Doenca doen){
+        pac.adicionaDoenca(doen);
+    }
+    
+    public ArrayList<RegistroConsulta> getRelatorioPaciente(Paciente pac, LocalDateTime dataInicio, LocalDateTime dataFim){
         ArrayList<RegistroConsulta> totalListaConsultas = new ArrayList();
         
         for(Medico medico: listaMedicos){
            ArrayList<RegistroConsulta> listaPorMedico;
-           listaPorMedico = medico.getHistoricoConsultasPorPaciente(pac);
+           listaPorMedico = medico.getHistoricoConsultasPorPaciente(pac, dataInicio, dataFim);
            for(RegistroConsulta reg: listaPorMedico){
                totalListaConsultas.add(reg);
            }
         }
-        
         return totalListaConsultas;
     }
     
-    @Override
-    public String toString() {
-        return "Clinica{" + "nome=" + nome + '}';
-    }   
+//    CLINICA
+    
+    public void agendarConsulta(Medico med, Paciente pac, LocalDateTime data){
+        boolean isDataDisponivel = med.getAgenda().marcarAgenda(data);
+        if(isDataDisponivel == true){
+            ConsultasAgendadas novaConsulta = new ConsultasAgendadas(med, pac, data);
+            med.getListaConsultasAgendadas().add(novaConsulta);
+        }else{
+            System.out.println("\n Data desejada nao existe ou nao esta disponivel \n");
+        } 
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 }

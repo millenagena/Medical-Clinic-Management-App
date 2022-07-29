@@ -52,6 +52,10 @@ public class Doenca {
     public void setOcorrencias(int ocorrencias) {
         this.ocorrencias = ocorrencias;
     }
+    
+    public void incrementaOcorrencia(){
+        this.ocorrencias++;
+    }
 
     @Override
     public String toString() {

@@ -31,7 +31,7 @@ public class Agenda {
             if(data.isEqual(dataDesejada)){
                 this.listaDatasIndisponiveis.add(data);
                 this.listaDatasDisponiveis.remove(data);
-                System.out.println("\n Data agendada com sucesso para o dia: "+ dataDesejada);
+                System.out.println("\n Data agendada com sucesso para o dia: "+ dataDesejada.toLocalDate() + " : " + dataDesejada.toLocalTime());
                 return true;
             }
         }

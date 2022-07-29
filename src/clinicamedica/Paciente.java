@@ -29,6 +29,16 @@ public class Paciente extends Pessoa {
     public void adicionaDoenca(Doenca a){
         this.historicoDoencas.add(a);
     }
+    
+    public boolean incrementaDoenca(Doenca a){
+        for(Doenca doenca: this.historicoDoencas){
+            if(a.equals(doenca)){
+                doenca.incrementaOcorrencia();
+                return true;
+            }
+        }
+        return false; //dai cria uma nova doenca no array de doencas do paciente
+    }
 
     @Override
     public String toString() {

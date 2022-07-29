@@ -89,6 +89,17 @@ public class RegistroConsulta {
     public void setObservacao(String observacao) {
         this.observacao = observacao;
     }
+    
+    public void mostrarRegistroRealizadoParaMedico(){
+        System.out.println("Nome do paciente :" + this.nomePaciente);
+        System.out.println("\nData realizada: "+ this.getDataConsulta().toLocalDate() + " : " + this.getDataConsulta().toLocalTime());
+    }
+    
+    public void mostrarRegistroRealizadoParaClinia(){
+        System.out.println("Nome do medico :" + this.nomeMedico);
+        System.out.println("\nNome do paciente :" + this.nomePaciente);
+        System.out.println("\nData realizada: "+ this.getDataConsulta().toLocalDate() + " : " + this.getDataConsulta().toLocalTime());
+    }
 
     @Override
     public String toString() {

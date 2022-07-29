@@ -22,14 +22,14 @@ public class ClinicaMedica {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        LocalDateTime diaMesAnoHoraMin = LocalDateTime.now();
-        System.out.println(diaMesAnoHoraMin);
-        
-        LocalDateTime teste1 = LocalDateTime.of(2023, 04, 22, 16, 30);
-        LocalDateTime teste2 = LocalDateTime.of(2023, 04, 22, 17, 30);
-        System.out.println(teste1.toLocalDate() + " : " + teste1.toLocalTime());
-        //String.format("foo %s:%s", param1, param2)
-        System.out.println(teste1.isAfter(diaMesAnoHoraMin));        
+//        LocalDateTime diaMesAnoHoraMin = LocalDateTime.now();
+//        System.out.println(diaMesAnoHoraMin);
+//        
+//        LocalDateTime teste1 = LocalDateTime.of(2023, 04, 22, 16, 30);
+//        LocalDateTime teste2 = LocalDateTime.of(2023, 04, 22, 17, 30);
+//        System.out.println(teste1.toLocalDate() + " : " + teste1.toLocalTime());
+//        //String.format("foo %s:%s", param1, param2)
+//        System.out.println(teste1.isAfter(diaMesAnoHoraMin));        
         
 //        ArrayList<ConsultasAgendadas> listaConsultas = med1.getListaConsultasAgendadas();
 //        for(ConsultasAgendadas a: listaConsultas){
@@ -47,8 +47,8 @@ public class ClinicaMedica {
         Medicamento testemedica = new Medicamento("nome", "faixa", 4, 0, "tipo", "indicacao");
         clinica1.cadastraMedicamento(testemedica);
         
-        while(op != 20){
-            System.out.println("=== MENU ===");
+        while(op != 30){
+            System.out.println("=== CLINICA MEDICA ===");
             //System.out.println("1 - Cadastrar Clinica");
             System.out.println("2 - CLINICA - Cadastrar Medico");
             System.out.println("3 - CLINICA - Cadastrar Paciente");
@@ -58,15 +58,17 @@ public class ClinicaMedica {
             System.out.println("7 - CLINICA - Historico de utilizacao dos medicamentos");
             System.out.println("8 - CLINICA - Listar medicos");
             System.out.println("9 - CLINICA - Listar pacientes");
-            System.out.println("10 - CLINICA - Ver consultas agendadas por medico");
-            System.out.println("11 - CLINICA - Ver consultas registradas por medico / relatorio do medico");
+            System.out.println("10 - CLINICA e/ou MEDICO - Ver consultas agendadas por medico");
+            System.out.println("11 - CLINICA e/ou MEDICO - Ver consultas registradas por medico / relatorio do medico");
             System.out.println("12 - CLINICA - Cadastrar medicamento");
             System.out.println("13 - MEDICO - Adicionar data disponivel na agenda");
             System.out.println("14 - MEDICO - Ver datas disponiveis");
             System.out.println("15 - CLINICA - Listar medicamentos");
             System.out.println("16 - PACIENTE - Atualizar historico de doencas");
-            System.out.println("17 - PACIENTE - Ver historico de consultas");
-            System.out.println("20 - sair");
+            System.out.println("17 - PACIENTE - Ver historico de consultas / relatorio paciente");
+            System.out.println("18 - CLINICA - Ver historico de consultas de todos os medicos / relatorio clinica");
+            System.out.println("19 - CLINICA - Ver todas consultas agendadas / relatorio clinica");
+            System.out.println("30 - sair");
             
             op = sc.nextInt();
             sc.nextLine();
@@ -94,7 +96,10 @@ public class ClinicaMedica {
             String tipo;
             String grau;
             String qtd_vezes;
+            LocalDateTime dataInicio;
+            LocalDateTime dataFim;
             int cont = 0;
+            ArrayList<Medico> listaTodosMedicos;
             
             
             switch (op){
@@ -229,8 +234,6 @@ public class ClinicaMedica {
                     clinica1.agendarConsulta(medico, paciente, dataDesejada);
                     break;
                 case 6:
-                    
-                    
                     System.out.println("Nome do medico: ");
                     nome = sc.nextLine();
                     medico = clinica1.buscaMedicoPeloNome(nome);
@@ -301,8 +304,33 @@ public class ClinicaMedica {
                     System.out.println("Nome do medico: ");
                     nome = sc.nextLine();
                     medico = clinica1.buscaMedicoPeloNome(nome);
-                    for(RegistroConsulta p: medico.getListaRegistroConsultas()){
-                        System.out.println(p.toString());
+                    medico.mostrarDataConsultasRealizadas();
+                    System.out.println("Informe uma data de inicio: ");
+                    System.out.println("dia: ");
+                    dia = sc.nextLine();
+                    System.out.println("mes: ");
+                    mes = sc.nextLine();
+                    System.out.println("ano: ");
+                    ano = sc.nextLine();
+                    System.out.println("hora: ");
+                    hora = sc.nextLine();
+                    System.out.println("minuto: ");
+                    minuto = sc.nextLine();
+                    dataInicio = LocalDateTime.of(Integer.parseInt(ano), Integer.parseInt(mes), Integer.parseInt(dia), Integer.parseInt(hora), Integer.parseInt(minuto));
+                    System.out.println("Informe uma data de data fim: ");
+                    System.out.println("dia: ");
+                    dia = sc.nextLine();
+                    System.out.println("mes: ");
+                    mes = sc.nextLine();
+                    System.out.println("ano: ");
+                    ano = sc.nextLine();
+                    System.out.println("hora: ");
+                    hora = sc.nextLine();
+                    System.out.println("minuto: ");
+                    minuto = sc.nextLine();
+                    dataFim = LocalDateTime.of(Integer.parseInt(ano), Integer.parseInt(mes), Integer.parseInt(dia), Integer.parseInt(hora), Integer.parseInt(minuto));
+                    for(RegistroConsulta p: medico.getFaixaRegistros(dataInicio, dataFim)){
+                        p.mostrarRegistroRealizadoParaMedico();
                     }
                     break;
                     
@@ -363,21 +391,71 @@ public class ClinicaMedica {
                     grau = sc.nextLine();
                     System.out.println("quantas vezes: ");
                     qtd_vezes = sc.nextLine();
+                    Doenca doencaPaciente;
+                    doencaPaciente = new Doenca(nomeDoenca, tipo, grau, Integer.parseInt(qtd_vezes));
                     
-                    paciente.adicionaDoenca(new Doenca(nomeDoenca, tipo, grau, Integer.parseInt(qtd_vezes)));
+                    boolean doencaJaExiste = paciente.incrementaDoenca(doencaPaciente);
+                    if(doencaJaExiste == false){
+                        paciente.adicionaDoenca(doencaPaciente);
+                    }
                     break;
                     
                 case 17:
                     System.out.println("Nome do paciente: ");
                     nome = sc.nextLine();
                     paciente = clinica1.buscaPacientePeloNome(nome);
+                    System.out.println("Informe uma data de inicio: ");
+                    System.out.println("dia: ");
+                    dia = sc.nextLine();
+                    System.out.println("mes: ");
+                    mes = sc.nextLine();
+                    System.out.println("ano: ");
+                    ano = sc.nextLine();
+                    System.out.println("hora: ");
+                    hora = sc.nextLine();
+                    System.out.println("minuto: ");
+                    minuto = sc.nextLine();
+                    dataInicio = LocalDateTime.of(Integer.parseInt(ano), Integer.parseInt(mes), Integer.parseInt(dia), Integer.parseInt(hora), Integer.parseInt(minuto));
+                    System.out.println("Informe uma data de data fim: ");
+                    System.out.println("dia: ");
+                    dia = sc.nextLine();
+                    System.out.println("mes: ");
+                    mes = sc.nextLine();
+                    System.out.println("ano: ");
+                    ano = sc.nextLine();
+                    System.out.println("hora: ");
+                    hora = sc.nextLine();
+                    System.out.println("minuto: ");
+                    minuto = sc.nextLine();
+                    dataFim = LocalDateTime.of(Integer.parseInt(ano), Integer.parseInt(mes), Integer.parseInt(dia), Integer.parseInt(hora), Integer.parseInt(minuto));
+                    
                     ArrayList<RegistroConsulta> listaRegistrosPaciente;
-                    listaRegistrosPaciente = clinica1.getRelatorioPaciente(paciente);
+                    listaRegistrosPaciente = clinica1.getRelatorioPaciente(paciente, dataInicio, dataFim);
                     for(RegistroConsulta registro: listaRegistrosPaciente){
                         System.out.println(registro.toString());
                     }
                     break;
                     
+                case 18:
+                    
+                    listaTodosMedicos = clinica1.getListaMedicos();
+                    for(Medico med: listaTodosMedicos){
+                        ArrayList<RegistroConsulta> listaConsultasPorMedico = med.getListaRegistroConsultas();
+                        for(RegistroConsulta registro: listaConsultasPorMedico){
+                            registro.mostrarRegistroRealizadoParaClinia();
+                        }
+                    }
+                    break;
+                    
+                case 19:
+                    listaTodosMedicos = clinica1.getListaMedicos();
+                    for(Medico med: listaTodosMedicos){
+                        ArrayList<ConsultasAgendadas> listaConsultasPorMedico = med.getListaConsultasAgendadas();
+                        for(ConsultasAgendadas consulta: listaConsultasPorMedico){
+                            System.out.println(consulta.toString());
+                        }
+                    }
+                    break;
             }
             
         }
