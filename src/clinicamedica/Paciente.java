@@ -11,19 +11,28 @@ import java.util.ArrayList;
  * @author lucas
  */
 public class Paciente extends Pessoa {
-    public ArrayList<Doenca> historicoDoencas;
+    private ArrayList<Doenca> historicoDoencas;
 
-    public Paciente(ArrayList<Doenca> historicoDoencas, String nome, String cpf, int idade, String rg, String nomeMae, int telefone, String email, String endereco) {
-        //super(nome, cpf, idade, rg, nomeMae, telefone, email, endereco);
+    public Paciente(ArrayList<Doenca> historicoDoencas, String nome, String cpf, int idade, String rg, String telefone, String email) {
+        super(nome, cpf, idade, rg, telefone, email);
         this.historicoDoencas = historicoDoencas;
-    }
-    
+    }    
+
     public ArrayList<Doenca> getHistoricoDoencas() {
         return historicoDoencas;
     }
 
+    public void setHistoricoDoencas(ArrayList<Doenca> historicoDoencas) {
+        this.historicoDoencas = historicoDoencas;
+    }
+    
+    public void adicionaDoenca(Doenca a){
+        this.historicoDoencas.add(a);
+    }
+
     @Override
     public String toString() {
-        return "Paciente{" + "historicoDoencas=" + historicoDoencas + '}';
+        return super.toString() + " Paciente{" + "historicoDoencas=" + historicoDoencas + '}';
     }
+    
 }

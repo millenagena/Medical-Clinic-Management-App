@@ -13,10 +13,19 @@ public class Pessoa {
     private String cpf;
     private int idade;
     private String rg;
-    private String nomeMae;
-    private int telefone;
+    private String telefone;
     private String email;
-    private String endereco;
+
+    public Pessoa(String nome, String cpf, int idade, String rg, String telefone, String email) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.idade = idade;
+        this.rg = rg;
+        this.telefone = telefone;
+        this.email = email;
+    }
+    
+    
 
     public String getNome() {
         return nome;
@@ -49,20 +58,12 @@ public class Pessoa {
     public void setRg(String rg) {
         this.rg = rg;
     }
-
-    public String getNomeMae() {
-        return nomeMae;
-    }
-
-    public void setNomeMae(String nomeMae) {
-        this.nomeMae = nomeMae;
-    }
-
-    public int getTelefone() {
+    
+    public String getTelefone() {
         return telefone;
     }
 
-    public void setTelefone(int telefone) {
+    public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
 
@@ -73,17 +74,9 @@ public class Pessoa {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
+    
     @Override
     public String toString() {
-        return "Pessoa{" + "nome=" + nome + ", cpf=" + cpf + ", idade=" + idade + ", rg=" + rg + ", nomeMae=" + nomeMae + ", telefone=" + telefone + ", email=" + email + ", endereco=" + endereco + '}';
+        return "Pessoa{" + "nome=" + nome + ", cpf=" + cpf + ", idade=" + idade + ", rg=" + rg + ", telefone=" + telefone + ", email=" + email + '}';
     }
 }

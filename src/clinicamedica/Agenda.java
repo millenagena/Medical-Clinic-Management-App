@@ -4,10 +4,8 @@
  */
 package clinicamedica;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  *
@@ -18,7 +16,7 @@ public class Agenda {
     private ArrayList <LocalDateTime> listaDatasIndisponiveis = new ArrayList();
     
     public Agenda(ArrayList <LocalDateTime> datasDisponiveis) {
-        this.listaDatasDisponiveis = datasDisponiveis; //22-05-2023 - 16:30
+        this.listaDatasDisponiveis = datasDisponiveis;
     }
     
     public void adicionarDataDisponivel(LocalDateTime data){
@@ -27,22 +25,27 @@ public class Agenda {
         System.out.println("\nData adicionada");
     }
     
-    public int realizarAgendamento(LocalDateTime dataDesejada){
+    public boolean marcarAgenda(LocalDateTime dataDesejada){
         //tratar data desejada
         for(LocalDateTime data: this.listaDatasDisponiveis){
-            if(data.equals(dataDesejada)){
+            if(data.isEqual(dataDesejada)){
                 this.listaDatasIndisponiveis.add(data);
                 this.listaDatasDisponiveis.remove(data);
                 System.out.println("\n Data agendada com sucesso para o dia: "+ dataDesejada);
-                return 1; //sucesso
+                return true;
             }
         }
-        System.out.println("\n Data desjada nao existe ou nao esta disponivel");
-        return 0; //falha 
+        return false; 
     }
 
     public ArrayList<LocalDateTime> getListaDatasDisponiveis() {
         return listaDatasDisponiveis;
+    }
+    
+    public void mostrarDatasDisponiveis(){
+        for(LocalDateTime data: this.listaDatasDisponiveis){
+            System.out.println(data.toLocalDate() + " : " + data.toLocalTime());
+        }
     }
 
     public ArrayList<LocalDateTime> getListaDatasIndisponiveis() {

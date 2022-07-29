@@ -13,6 +13,13 @@ public class Doenca {
     private String tipo;
     private String grau;
     private int ocorrencias;
+
+    public Doenca(String nomeDoenca, String tipo, String grau, int ocorrencias) {
+        this.nomeDoenca = nomeDoenca;
+        this.tipo = tipo;
+        this.grau = grau;
+        this.ocorrencias = ocorrencias;
+    }
     
     public String getNomeDoenca() {
         return nomeDoenca;
@@ -45,4 +52,11 @@ public class Doenca {
     public void setOcorrencias(int ocorrencias) {
         this.ocorrencias = ocorrencias;
     }
+
+    @Override
+    public String toString() {
+        return "Doenca{" + "nomeDoenca=" + nomeDoenca + ", tipo=" + tipo + ", grau=" + grau + ", ocorrencias=" + ocorrencias + '}';
+    }
+    
+    
 }

@@ -4,6 +4,7 @@
  */
 package clinicamedica;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
@@ -12,10 +13,120 @@ import java.util.ArrayList;
  */
 public class Clinica {
     private String nome;
-    private Endereco endereco;
     private ArrayList <Medico> listaMedicos = new ArrayList();
     private ArrayList <Paciente> listaPacientes = new ArrayList();
     private ArrayList <Medicamento> listaMedicamentos = new ArrayList();
-    private ArrayList <RegistroConsulta> listaConsultas = new ArrayList();
+
+    public Clinica() {
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public ArrayList<Medico> getListaMedicos() {
+        return listaMedicos;
+    }
+
+    public ArrayList<Paciente> getListaPacientes() {
+        return listaPacientes;
+    }
+
+    public ArrayList<Medicamento> getListaMedicamentos() {
+        return listaMedicamentos;
+    }
+    
+    public void mostrarListaMedicamentos(){
+        for(Medicamento medica: listaMedicamentos){
+            System.out.println(medica.toString());
+        }
+    }
+    
+    public Paciente buscaPacientePeloNome(String nome){
+        for(Paciente pac: listaPacientes){
+            if(nome.equals(pac.getNome())){
+                return pac;
+            }
+        }
+        return null;
+    }
+    
+    public void cadastrarPaciente(Paciente a){
+        this.listaPacientes.add(a);
+    }
+    
+    public Medico buscaMedicoPeloNome(String nome){
+        for(Medico med: listaMedicos){
+            if(nome.equals(med.getNome())){
+                return med;
+            }
+        }
+        return null;
+    }
+    
+    public void cadastrarMedico(Medico a){
+        listaMedicos.add(a);
+    }
+    
+    public void agendarConsulta(Medico med, Paciente pac, LocalDateTime data){
+        boolean isDataDisponivel = med.getAgenda().marcarAgenda(data);
+        if(isDataDisponivel == true){
+            ConsultasAgendadas novaConsulta = new ConsultasAgendadas(med, pac, data);
+            med.getListaConsultasAgendadas().add(novaConsulta);
+        }else{
+            System.out.println("\n Data desejada nao existe ou nao esta disponivel \n");
+        } 
+    }
+    
+    public void atualizaHistoricoDoencaPaciente(Paciente pac, Doenca doen){
+        pac.adicionaDoenca(doen);
+    }
+    
+    public void cadastraMedicamento(Medicamento a){
+        listaMedicamentos.add(a);
+    }
+    
+    public Medicamento buscaMedicamentoPeloNome(String nome){
+        for(Medicamento medicamento: listaMedicamentos){
+            if(nome.equals(medicamento.getNome())){
+                return medicamento;
+            }
+        }
+        return null;
+    }
+    
+    public void setarEstoqueMedicamento(int quantidade, String nome){
+        Medicamento medicamento = buscaMedicamentoPeloNome(nome);
+        medicamento.setQuantidadeEstoque(quantidade);
+    }
+    
+    public void getUtilizacaoMedicamentos(){
+        for(Medicamento medicamento: listaMedicamentos){
+            System.out.println(medicamento.toString());
+        }
+    }
+    
+    public ArrayList<RegistroConsulta> getRelatorioPaciente(Paciente pac){
+        ArrayList<RegistroConsulta> totalListaConsultas = new ArrayList();
+        
+        for(Medico medico: listaMedicos){
+           ArrayList<RegistroConsulta> listaPorMedico;
+           listaPorMedico = medico.getHistoricoConsultasPorPaciente(pac);
+           for(RegistroConsulta reg: listaPorMedico){
+               totalListaConsultas.add(reg);
+           }
+        }
+        
+        return totalListaConsultas;
+    }
+    
+    @Override
+    public String toString() {
+        return "Clinica{" + "nome=" + nome + '}';
+    }   
     
 }
