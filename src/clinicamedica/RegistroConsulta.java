@@ -91,19 +91,19 @@ public class RegistroConsulta {
     }
     
     public void mostrarRegistroRealizadoParaMedico(){
-        System.out.println("Nome do paciente :" + this.nomePaciente);
-        System.out.println("\nData realizada: "+ this.getDataConsulta().toLocalDate() + " : " + this.getDataConsulta().toLocalTime());
+        System.out.println("\nNome do paciente :" + this.nomePaciente);
+        System.out.println("\nData realizada: "+ this.getDataConsulta().toLocalDate() + " : " + this.getDataConsulta().toLocalTime()+"\n");
     }
     
     public void mostrarRegistroRealizadoParaClinia(){
-        System.out.println("Nome do medico :" + this.nomeMedico);
+        System.out.println("\nNome do medico :" + this.nomeMedico);
         System.out.println("\nNome do paciente :" + this.nomePaciente);
-        System.out.println("\nData realizada: "+ this.getDataConsulta().toLocalDate() + " : " + this.getDataConsulta().toLocalTime());
+        System.out.println("\nData realizada: "+ this.getDataConsulta().toLocalDate() + " : " + this.getDataConsulta().toLocalTime()+"\n");
     }
 
     @Override
     public String toString() {
-        return "RegistroConsulta{" + "nomePaciente=" + nomePaciente + ", nomeMedico=" + nomeMedico + ", especialidadeMedico=" + especialidadeMedico + ", dataConsulta=" + dataConsulta.toLocalDate() + " : " + dataConsulta.toLocalTime() + ", bpm=" + bpm + ", pressao=" + pressao + ", temperatura=" + temperatura + ", medicamentosIndicados=" + medicamentosIndicados.toString() + ", observacao=" + observacao + '}';
+        return "\nRegistroConsulta{" + "nomePaciente=" + nomePaciente + ", nomeMedico=" + nomeMedico + ", especialidadeMedico=" + especialidadeMedico + ", dataConsulta=" + dataConsulta.toLocalDate() + " : " + dataConsulta.toLocalTime() + ", bpm=" + bpm + ", pressao=" + pressao + ", temperatura=" + temperatura + ", medicamentosIndicados=" + medicamentosIndicados.toString() + ", observacao=" + observacao + '}';
     }   
     
     

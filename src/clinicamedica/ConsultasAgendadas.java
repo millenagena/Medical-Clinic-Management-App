@@ -47,7 +47,7 @@ public class ConsultasAgendadas {
 
     @Override
     public String toString() {
-        return "ConsultasAgendadas{" + "med=" + med.getNome() + ", pac=" + pac.getNome() + ", data=" + data.toLocalDate() + " : " + data.toLocalTime() + '}';
+        return "\nConsultasAgendadas{" + "med=" + med.getNome() + ", pac=" + pac.getNome() + ", data=" + data.toLocalDate() + " : " + data.toLocalTime() + '}';
     }
     
 }

@@ -11,11 +11,11 @@ import java.util.ArrayList;
  *
  * @author lucas
  */
-public class Clinica {
+public class Clinica implements GerenciadorMedicamento, GerenciadorMedico, GerenciadorPaciente, GerenciadorClinica {
     private String nome;
-    private ArrayList <Medico> listaMedicos = new ArrayList();
-    private ArrayList <Paciente> listaPacientes = new ArrayList();
-    private ArrayList <Medicamento> listaMedicamentos = new ArrayList();
+    private static ArrayList <Medico> listaMedicos = new ArrayList();
+    private static ArrayList <Paciente> listaPacientes = new ArrayList();
+    private static ArrayList <Medicamento> listaMedicamentos = new ArrayList();
 
     public Clinica() {
     }
@@ -48,8 +48,8 @@ public class Clinica {
 //    GERENCIA MEDICAMENTOS
     
     public void mostrarListaMedicamentos(){
-        for(Medicamento medica: listaMedicamentos){
-            System.out.println(medica.toString());
+        for(Medicamento medicamento: listaMedicamentos){
+            System.out.println("\n"+medicamento.toString()+"\n");
         }
     }
     
@@ -73,7 +73,7 @@ public class Clinica {
     
     public void getUtilizacaoMedicamentos(){
         for(Medicamento medicamento: listaMedicamentos){
-            System.out.println(medicamento.toString());
+            System.out.println("\nNome: "+ medicamento.getNome() + "Quantidade: " + medicamento.getQuantidadeEstoque() + "Vezes usados: "+ medicamento.getQuantidadeUso());
         }
     }
     

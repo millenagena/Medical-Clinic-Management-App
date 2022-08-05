@@ -42,7 +42,7 @@ public class Paciente extends Pessoa {
 
     @Override
     public String toString() {
-        return super.toString() + " Paciente{" + "historicoDoencas=" + historicoDoencas + '}';
+        return super.toString() + "\n Paciente{" + "historicoDoencas=" + historicoDoencas + '}';
     }
     
 }

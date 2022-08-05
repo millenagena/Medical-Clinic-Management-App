@@ -18,6 +18,14 @@ public class Agenda {
     public Agenda(ArrayList <LocalDateTime> datasDisponiveis) {
         this.listaDatasDisponiveis = datasDisponiveis;
     }
+
+    public Agenda(ArrayList <LocalDateTime> datasDisponiveis, ArrayList <LocalDateTime> datasIndisponiveis) {
+        this.listaDatasDisponiveis = datasDisponiveis;
+        this.listaDatasDisponiveis = datasIndisponiveis;
+    }
+
+    
+    
     
     public void adicionarDataDisponivel(LocalDateTime data){
         //tratar data quando chamar este metodo
@@ -44,7 +52,7 @@ public class Agenda {
     
     public void mostrarDatasDisponiveis(){
         for(LocalDateTime data: this.listaDatasDisponiveis){
-            System.out.println(data.toLocalDate() + " : " + data.toLocalTime());
+            System.out.println("\n"+ data.toLocalDate() + " : " + data.toLocalTime()+ "\n");
         }
     }
 
@@ -55,5 +63,9 @@ public class Agenda {
     @Override
     public String toString() {
         return "Agenda{" + "listaDatasDisponiveis=" + listaDatasDisponiveis + ", listaDatasIndisponiveis=" + listaDatasIndisponiveis + '}';
-    }    
+    }
+    
+    public String toArquivo(){
+        return listaDatasDisponiveis + "-" + listaDatasIndisponiveis;
+    }
 }

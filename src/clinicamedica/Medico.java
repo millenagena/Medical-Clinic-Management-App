@@ -52,7 +52,7 @@ public class Medico extends Pessoa {
     
     @Override
     public String toString() {
-        return super.toString()+ " Medico{" + "especialidade=" + especialidade + ", listaConvenios=" + listaConvenios + '}';
+        return super.toString()+ "\n Medico{" + "especialidade=" + especialidade + ", listaConvenios=" + listaConvenios + '}';
     }
     
 //    CONVENIO
@@ -112,7 +112,7 @@ public class Medico extends Pessoa {
     
     public void mostrarDataConsultasRealizadas(){
         for(RegistroConsulta registro: listaRegistroConsultas){
-            System.out.println(registro.getDataConsulta().toLocalDate() + " : " + registro.getDataConsulta().toLocalTime());
+            System.out.println("\n"+registro.getDataConsulta().toLocalDate() + " : " + registro.getDataConsulta().toLocalTime()+"\n");
         }
     }
     
@@ -142,6 +142,10 @@ public class Medico extends Pessoa {
             }
         }
         return listaConsultas;
+    }
+    
+    public String toCsv(){
+        return super.getNome() + ";" +  super.getCpf() + ";" +  super.getIdade() + ";" + super.getRg();
     }
     
 }
