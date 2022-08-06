@@ -11,6 +11,6 @@ package clinicamedica;
 public interface GerenciadorMedico {
     public Medico buscaMedicoPeloNome(String nome);
     
-    public void cadastrarMedico(Medico a);
+    public void cadastrarMedico(Medico a) ;
     
 }

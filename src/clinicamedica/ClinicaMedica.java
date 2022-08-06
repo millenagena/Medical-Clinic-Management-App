@@ -72,7 +72,7 @@ public class ClinicaMedica {
             System.out.println("17 - PACIENTE - Ver historico de consultas / relatorio paciente");
             System.out.println("18 - CLINICA - Ver historico de consultas de todos os medicos / relatorio clinica");
             System.out.println("19 - CLINICA - Ver todas consultas agendadas / relatorio clinica");
-            System.out.println("20 - MEDICO - Ver consultas registradas de um paciente / relatorio do medico");
+            System.out.println("20 - MEDICO - Ver historico de consultas de um paciente / relatorio do medico");
             System.out.println("21 - PACIENTE - Ver consultas agendadas com medico");
             System.out.println("30 - sair");
             
@@ -168,9 +168,13 @@ public class ClinicaMedica {
                 }
                 catch(DateTimeException ex){
                     System.out.println("\n Datas invalida: "+ ex.getMessage());
+                } catch (DataException ex) {
+                    System.out.println(ex.getMessage());
                 }
                     
                     break;
+
+
                 case 3:
                     try {
                         System.out.println("Nome do paciente: ");
@@ -675,8 +679,7 @@ public class ClinicaMedica {
                         System.out.println("\n========\n");
                     }
                     break;
-                case 20: //nao pegar uma faixa de datas mas sim uma unica data
-                    //percorrer lista de registros do medico -> verificar pela data e nome do paciente
+                case 20:
                     try {
                         System.out.println("\nNome do medico:");
                         nome = sc.nextLine();
@@ -684,7 +687,7 @@ public class ClinicaMedica {
                         System.out.println("Nome do paciente: ");
                         nome = sc.nextLine();
                         paciente = clinica.buscaPacientePeloNome(nome);
-                        System.out.println("Informe uma data de inicio: ");
+                        System.out.println("Informe uma data: ");
                         System.out.println("dia: ");
                         dia = sc.nextLine();
                         System.out.println("mes: ");
@@ -696,24 +699,11 @@ public class ClinicaMedica {
                         System.out.println("minuto: ");
                         minuto = sc.nextLine();
                         dataInicio = LocalDateTime.of(Integer.parseInt(ano), Integer.parseInt(mes), Integer.parseInt(dia), Integer.parseInt(hora), Integer.parseInt(minuto));
-                        System.out.println("Informe uma data de data fim: ");
-                        System.out.println("dia: ");
-                        dia = sc.nextLine();
-                        System.out.println("mes: ");
-                        mes = sc.nextLine();
-                        System.out.println("ano: ");
-                        ano = sc.nextLine();
-                        System.out.println("hora: ");
-                        hora = sc.nextLine();
-                        System.out.println("minuto: ");
-                        minuto = sc.nextLine();
-                        dataFim = LocalDateTime.of(Integer.parseInt(ano), Integer.parseInt(mes), Integer.parseInt(dia), Integer.parseInt(hora), Integer.parseInt(minuto));
-
-                        ArrayList<RegistroConsulta> listaRegistrosDePaciente;
-                        listaRegistrosDePaciente = medico.getHistoricoConsultasPorPaciente(paciente, dataInicio, dataFim);
                         System.out.println("\n=====REGISTRO CONSULTAS DE "+ paciente.getNome() +"======\n");
-                        for(RegistroConsulta registro: listaRegistrosDePaciente){
-                            System.out.println("\n"+ registro.getRegistroRealizadoDePacienteParaMedico());
+                        for(RegistroConsulta registro: medico.getListaRegistroConsultas()){
+                            if(dataInicio == registro.getDataConsulta() && registro.getNomePaciente().equals(paciente.getNome())){
+                                System.out.println("\n"+ registro.getRegistroRealizadoDePacienteParaMedico());
+                            }
                         }
                         System.out.println("\n=========\n");
                     } catch (NullPointerException e) {

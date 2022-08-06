@@ -88,7 +88,7 @@ public class Clinica implements GerenciadorMedicamento, GerenciadorMedico, Geren
     }
     
     @Override
-    public void cadastrarMedico(Medico a){
+    public void cadastrarMedico(Medico a) {
         listaMedicos.add(a);
     }
     

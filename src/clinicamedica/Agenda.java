@@ -14,13 +14,13 @@ import java.util.ArrayList;
 public class Agenda {
     private ArrayList <LocalDateTime> listaDatasDisponiveis = new ArrayList();
     
-    public Agenda(ArrayList <LocalDateTime> datasDisponiveis) {
+    public Agenda(ArrayList <LocalDateTime> datasDisponiveis) throws DataException {
+        for(LocalDateTime d: datasDisponiveis){
+            if(d.isBefore(LocalDateTime.now())){
+                throw new DataException("\nData invalida - Datas antigas nao sao aceitas");
+            }
+        }
         this.listaDatasDisponiveis = datasDisponiveis;
-    }
-
-    public Agenda(ArrayList <LocalDateTime> datasDisponiveis, ArrayList <LocalDateTime> datasIndisponiveis) {
-        this.listaDatasDisponiveis = datasDisponiveis;
-        this.listaDatasDisponiveis = datasIndisponiveis;
     }
 
     public void adicionarDataDisponivel(LocalDateTime data) throws DataException {

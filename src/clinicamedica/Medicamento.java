@@ -114,7 +114,7 @@ indicado, ajudaria na receita pelo médico durante a consulta.
 
     @Override
     public String toString() {
-        return "Medicamento{" + "nome=" + nome + ", Faixa=" + Faixa + ", quantidadeEstoque=" + quantidadeEstoque + ", quantidadeUso=" + quantidadeUso + ", tipo=" + tipo + ", indicacao=" + indicacao + '}';
+        return "Medicamento{" + "\nnome: " + nome + "\nFaixa: " + Faixa  + "\ntipo: " + tipo + "\nindicacao: " + indicacao + '}';
     }
 
 }
