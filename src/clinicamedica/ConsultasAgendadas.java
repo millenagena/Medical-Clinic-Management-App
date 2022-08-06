@@ -13,12 +13,28 @@ import java.time.LocalDateTime;
 public class ConsultasAgendadas {
     private Paciente pac;
     private LocalDateTime data;
+    private boolean isRealizada;
 
     public ConsultasAgendadas(Paciente pac, LocalDateTime data) {
         this.pac = pac;
         this.data = data;
+        this.isRealizada = false;
+    }
+    
+    public ConsultasAgendadas(Paciente pac, LocalDateTime data, boolean isRealizada) {
+        this.pac = pac;
+        this.data = data;
+        this.isRealizada = isRealizada;
     }
 
+    public boolean isIsRealizada() {
+        return isRealizada;
+    }
+
+    public void setIsRealizada(boolean isRealizada) {
+        this.isRealizada = isRealizada;
+    }
+    
     public Paciente getPac() {
         return pac;
     }
@@ -37,7 +53,11 @@ public class ConsultasAgendadas {
 
     @Override
     public String toString() {
-        return "\n Consultas Agendadas: \n" + "paciente: " + pac.getNome() + ", data: " + data.toLocalDate() + " : " + data.toLocalTime();
+        String conSultaRealizada = "Nao";
+        if(this.isRealizada){
+            conSultaRealizada = "Sim";
+        }
+        return "\n Consulta Agendada:  " + "\npaciente: " + pac.getNome() + "\ndata: " + data.toLocalDate() + " : " + data.toLocalTime() + "\nJa foi realizada: "+ conSultaRealizada;                      
     }
     
 }

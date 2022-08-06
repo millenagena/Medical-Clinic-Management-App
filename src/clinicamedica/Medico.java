@@ -125,13 +125,49 @@ public class Medico extends Pessoa {
         return listaConsultas;
     }
     
-    public void registrarConsultaRealizada(Paciente pac, LocalDateTime data, String bpm, String pressao, String temperatura, String diagnostico, ArrayList<Medicamento> listaMedicamentos){
-        RegistroConsulta consultaRealizada = new RegistroConsulta(pac.getNome(), super.getNome(), this.especialidade, data, bpm, pressao,temperatura, diagnostico, listaMedicamentos);
-        for(Medicamento medicamento: listaMedicamentos){
-            medicamento.decrementaQuantidade();
-            medicamento.incrementaUso();
+    public void registrarConsultaRealizada(Paciente pac, String bpm, String pressao, String temperatura, String diagnostico, ArrayList<Medicamento> listaMedicamentos) throws ConsultaException {
+        LocalDateTime data = null;
+        for(ConsultasAgendadas c: this.listaConsultasAgendadas){
+            if(c.getPac().getNome().equals(pac.getNome())){
+                data = c.getData();
+                c.setIsRealizada(true);
+            }
+            //criar um consulta exception e lancar ela aqui caso nao ache uma consulta
         }
-        this.listaRegistroConsultas.add(consultaRealizada);
+        if(data == null){
+            throw new ConsultaException("\n Consulta nao encontrada, talvez nao haja consultas agendadas");
+        }else{
+            RegistroConsulta consultaRealizada = new RegistroConsulta(pac.getNome(), super.getNome(), this.especialidade, data, bpm, pressao,temperatura, diagnostico, listaMedicamentos);
+            for(Medicamento medicamento: listaMedicamentos){
+                medicamento.decrementaQuantidade();
+                medicamento.incrementaUso();
+            }
+            this.listaRegistroConsultas.add(consultaRealizada);
+        }
+    }
+    
+    //deletar este metodo
+//    public void registrarConsultaRealizada(Paciente pac, LocalDateTime data, String bpm, String pressao, String temperatura, String diagnostico){
+//        RegistroConsulta consultaRealizada = new RegistroConsulta(pac.getNome(), super.getNome(), this.especialidade, data, bpm, pressao,temperatura, diagnostico);
+//        this.listaRegistroConsultas.add(consultaRealizada);
+//    }
+    
+    //tentar usar este metodo
+    public void registrarConsultaRealizada(Paciente pac, String bpm, String pressao, String temperatura, String diagnostico) throws ConsultaException {
+        LocalDateTime data = null;
+        for(ConsultasAgendadas c: this.listaConsultasAgendadas){
+            if(c.getPac().getNome().equals(pac.getNome())){
+                data = c.getData();
+                c.setIsRealizada(true);
+            }
+            //criar um consulta exception e lancar ela aqui caso nao ache uma consulta
+        }
+        if(data == null){
+            throw new ConsultaException("\n Consulta nao encontrada, talvez nao haja consultas agendadas");
+        }else{
+            RegistroConsulta consultaRealizada = new RegistroConsulta(pac.getNome(), super.getNome(), this.especialidade, data, bpm, pressao,temperatura, diagnostico);
+            this.listaRegistroConsultas.add(consultaRealizada);
+        }
     }
     
 //    CONSULTAS AGENDADAS

@@ -33,6 +33,17 @@ public class RegistroConsulta {
         this.observacao = observacao;
         this.medicamentosIndicados = listaMedicamentos;
     }
+    
+    public RegistroConsulta(String nomePaciente, String nomeMedico, String especialidadeMedico, LocalDateTime dataConsulta, String bpm, String pressao, String temperatura, String observacao) {
+        this.nomePaciente = nomePaciente;
+        this.nomeMedico = nomeMedico;
+        this.especialidadeMedico = especialidadeMedico;
+        this.dataConsulta = dataConsulta;
+        this.bpm = bpm;
+        this.pressao = pressao;
+        this.temperatura = temperatura;
+        this.observacao = observacao;
+    }
 
     public String getNomePaciente() {
         return nomePaciente;
