@@ -47,16 +47,12 @@ public class Clinica implements GerenciadorMedicamento, GerenciadorMedico, Geren
     
 //    GERENCIA MEDICAMENTOS
     
-    public void mostrarListaMedicamentos(){
-        for(Medicamento medicamento: listaMedicamentos){
-            System.out.println("\n"+medicamento.toString()+"\n");
-        }
-    }
-    
+    @Override
     public void cadastraMedicamento(Medicamento a){
         listaMedicamentos.add(a);
     }
     
+    @Override
     public Medicamento buscaMedicamentoPeloNome(String nome){
         for(Medicamento medicamento: listaMedicamentos){
             if(nome.equals(medicamento.getNome())){
@@ -66,19 +62,22 @@ public class Clinica implements GerenciadorMedicamento, GerenciadorMedico, Geren
         return null;
     }
     
+    @Override
     public void setarEstoqueMedicamento(int quantidade, String nome){
         Medicamento medicamento = buscaMedicamentoPeloNome(nome);
         medicamento.setQuantidadeEstoque(quantidade);
     }
     
+    @Override
     public void getUtilizacaoMedicamentos(){
         for(Medicamento medicamento: listaMedicamentos){
-            System.out.println("\nNome: "+ medicamento.getNome() + "Quantidade: " + medicamento.getQuantidadeEstoque() + "Vezes usados: "+ medicamento.getQuantidadeUso());
+            System.out.println("\nNome: "+ medicamento.getNome() + "\nQuantidade: " + medicamento.getQuantidadeEstoque() + "\nVezes usados: "+ medicamento.getQuantidadeUso());
         }
     }
     
 //    GERENCIA MEDICO
     
+    @Override
     public Medico buscaMedicoPeloNome(String nome){
         for(Medico med: listaMedicos){
             if(nome.equals(med.getNome())){
@@ -88,12 +87,14 @@ public class Clinica implements GerenciadorMedicamento, GerenciadorMedico, Geren
         return null;
     }
     
+    @Override
     public void cadastrarMedico(Medico a){
         listaMedicos.add(a);
     }
     
 //    GERENCIA PACIENTE
     
+    @Override
     public Paciente buscaPacientePeloNome(String nome){
         for(Paciente pac: listaPacientes){
             if(nome.equals(pac.getNome())){
@@ -103,14 +104,17 @@ public class Clinica implements GerenciadorMedicamento, GerenciadorMedico, Geren
         return null;
     }
     
+    @Override
     public void cadastrarPaciente(Paciente a){
         this.listaPacientes.add(a);
     }
     
+    @Override
     public void atualizaHistoricoDoencaPaciente(Paciente pac, Doenca doen){
         pac.adicionaDoenca(doen);
     }
     
+    @Override
     public ArrayList<RegistroConsulta> getRelatorioPaciente(Paciente pac, LocalDateTime dataInicio, LocalDateTime dataFim){
         ArrayList<RegistroConsulta> totalListaConsultas = new ArrayList();
         
@@ -126,24 +130,19 @@ public class Clinica implements GerenciadorMedicamento, GerenciadorMedico, Geren
     
 //    CLINICA
     
-    public void agendarConsulta(Medico med, Paciente pac, LocalDateTime data){
+    @Override
+    public void agendarConsulta(Medico med, Paciente pac, LocalDateTime data) throws DataException {
+        LocalDateTime currentDate = LocalDateTime.now();
+        if(data.isBefore(currentDate)){
+            throw new DataException("\nData invalida!");
+        }
         boolean isDataDisponivel = med.getAgenda().marcarAgenda(data);
         if(isDataDisponivel == true){
-            ConsultasAgendadas novaConsulta = new ConsultasAgendadas(med, pac, data);
+            ConsultasAgendadas novaConsulta = new ConsultasAgendadas(pac, data);
             med.getListaConsultasAgendadas().add(novaConsulta);
         }else{
-            System.out.println("\n Data desejada nao existe ou nao esta disponivel \n");
+            throw new DataException("\n Data desejada nao existe ou nao esta disponivel \n");
         } 
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
 }

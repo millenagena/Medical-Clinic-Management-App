@@ -90,20 +90,25 @@ public class RegistroConsulta {
         this.observacao = observacao;
     }
     
-    public void mostrarRegistroRealizadoParaMedico(){
-        System.out.println("\nNome do paciente :" + this.nomePaciente);
-        System.out.println("\nData realizada: "+ this.getDataConsulta().toLocalDate() + " : " + this.getDataConsulta().toLocalTime()+"\n");
+    public String getRegistroRealizadoParaPaciente(){
+        return "\nPaciente: " + this.nomePaciente + "\nMedico: " + this.nomeMedico + "\nData realizada: "+ this.getDataConsulta().toLocalDate() + " : " + this.getDataConsulta().toLocalTime()+"\n";
     }
     
-    public void mostrarRegistroRealizadoParaClinia(){
-        System.out.println("\nNome do medico :" + this.nomeMedico);
-        System.out.println("\nNome do paciente :" + this.nomePaciente);
-        System.out.println("\nData realizada: "+ this.getDataConsulta().toLocalDate() + " : " + this.getDataConsulta().toLocalTime()+"\n");
+    public String getRegistroRealizadoParaMedico(){
+        return "\nNome do paciente :" + this.nomePaciente + "\nData realizada: "+ this.getDataConsulta().toLocalDate() + " : " + this.getDataConsulta().toLocalTime()+"\n";
+    }
+    
+    public String getRegistroRealizadoDePacienteParaMedico(){
+        return "data da consulta=" + dataConsulta.toLocalDate() + " : " + dataConsulta.toLocalTime() + "\nbpm: " + bpm + "\n pressao: " + pressao + "\ntemperatura: " + temperatura + "\nmedicamentos indicados: " + medicamentosIndicados.toString() + "\n observacao: " + observacao + '}';
+    }
+    
+    public String getRegistroRealizadoParaClinia(){
+        return "\nNome do medico :" + this.nomeMedico + "\nNome do paciente :" + this.nomePaciente + "\nData realizada: "+ this.getDataConsulta().toLocalDate() + " : " + this.getDataConsulta().toLocalTime()+"\n";
     }
 
     @Override
     public String toString() {
-        return "\nRegistroConsulta{" + "nomePaciente=" + nomePaciente + ", nomeMedico=" + nomeMedico + ", especialidadeMedico=" + especialidadeMedico + ", dataConsulta=" + dataConsulta.toLocalDate() + " : " + dataConsulta.toLocalTime() + ", bpm=" + bpm + ", pressao=" + pressao + ", temperatura=" + temperatura + ", medicamentosIndicados=" + medicamentosIndicados.toString() + ", observacao=" + observacao + '}';
+        return "\nRegistro Consulta{" + "nome Paciente=" + nomePaciente + ", nome Medico=" + nomeMedico + ", especialidade Medico=" + especialidadeMedico + ", data Consulta=" + dataConsulta.toLocalDate() + " : " + dataConsulta.toLocalTime() + ", bpm=" + bpm + ", pressao=" + pressao + ", temperatura=" + temperatura + ", medicamentos Indicados=" + medicamentosIndicados.toString() + ", observacao=" + observacao + '}';
     }   
     
     

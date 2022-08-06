@@ -30,16 +30,32 @@ public class Paciente extends Pessoa {
         this.historicoDoencas.add(a);
     }
     
-    public boolean incrementaDoenca(Doenca a){
+    public void incrementaDoenca(Doenca a){
         for(Doenca doenca: this.historicoDoencas){
-            if(a.equals(doenca)){
+            if(a.getNomeDoenca().equals(doenca.getNomeDoenca())){
                 doenca.incrementaOcorrencia();
+            }
+        }
+    }
+    
+    public boolean doencaExiste(String a){
+        for(Doenca doenca: this.historicoDoencas){
+            if(a.equals(doenca.getNomeDoenca())){
                 return true;
             }
         }
-        return false; //dai cria uma nova doenca no array de doencas do paciente
+        return false;
     }
-
+    
+    public Doenca buscaDoencaPeloNome(String a){
+        for(Doenca doenca: this.historicoDoencas){
+            if(a.equals(doenca.getNomeDoenca())){
+                return doenca;
+            }
+        }
+        return null;
+    }
+    
     @Override
     public String toString() {
         return super.toString() + "\n Paciente{" + "historicoDoencas=" + historicoDoencas + '}';

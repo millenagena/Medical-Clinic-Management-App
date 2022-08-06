@@ -4,10 +4,14 @@
  */
 package clinicamedica;
 
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -58,8 +62,8 @@ public class ClinicaMedica {
             System.out.println("7 - CLINICA - Historico de utilizacao dos medicamentos");
             System.out.println("8 - CLINICA - Listar medicos");
             System.out.println("9 - CLINICA - Listar pacientes");
-            System.out.println("10 - MEDICO e/ou CLINICA - Ver consultas agendadas por medico");
-            System.out.println("11 - MEDICO e/ou CLINICA - Ver consultas registradas por medico / relatorio do medico");
+            System.out.println("10 - MEDICO - Ver consultas agendadas por medico");
+            System.out.println("11 - MEDICO - Ver consultas registradas por medico / relatorio do medico");
             System.out.println("12 - CLINICA - Cadastrar medicamento");
             System.out.println("13 - MEDICO - Adicionar data disponivel na agenda");
             System.out.println("14 - MEDICO - Ver datas disponiveis");
@@ -68,6 +72,8 @@ public class ClinicaMedica {
             System.out.println("17 - PACIENTE - Ver historico de consultas / relatorio paciente");
             System.out.println("18 - CLINICA - Ver historico de consultas de todos os medicos / relatorio clinica");
             System.out.println("19 - CLINICA - Ver todas consultas agendadas / relatorio clinica");
+            System.out.println("20 - MEDICO - Ver consultas registradas de um paciente / relatorio do medico");
+            System.out.println("21 - PACIENTE - Ver consultas agendadas com medico");
             System.out.println("30 - sair");
             
             op = sc.nextInt();
@@ -130,7 +136,7 @@ public class ClinicaMedica {
                         LocalDateTime d;
                     
                     for(int i=0;i<cont;i++){
-                        System.out.println("data"+ i +": ");
+                        System.out.println("data "+ i+1 +": ");
                         System.out.println("dia: ");
                         dia = sc.nextLine();
                         System.out.println("mes: ");
@@ -141,14 +147,17 @@ public class ClinicaMedica {
                         hora = sc.nextLine();
                         System.out.println("minuto: ");
                         minuto = sc.nextLine();
+                        
                         d = LocalDateTime.of(Integer.parseInt(ano), Integer.parseInt(mes), Integer.parseInt(dia), Integer.parseInt(hora), Integer.parseInt(minuto));
+                        
+                        System.out.println("Data inserida: "+ d.toString());
                         datasDisponiveis.add(d);
                     }
                     
                     agenda = new Agenda(datasDisponiveis);
                     
                     medico = new Medico(especialidade, nome, cpf, Integer.parseInt(idade), rg, telefone, email, agenda);
-                        System.out.println("\nMedico Cadastrado com sucesso");
+                    System.out.println("\nMedico Cadastrado com sucesso");
                     System.out.println("\n"+medico.toString());
                     clinica.cadastrarMedico(medico);
                 } catch (NullPointerException e) {
@@ -156,6 +165,9 @@ public class ClinicaMedica {
                 }
                 catch(NumberFormatException ex){
                     System.out.println("\n Datas devem ser numericos: "+ ex.getMessage());
+                }
+                catch(DateTimeException ex){
+                    System.out.println("\n Datas invalida: "+ ex.getMessage());
                 }
                     
                     break;
@@ -238,8 +250,11 @@ public class ClinicaMedica {
                         nome = sc.nextLine();
                         medico = clinica.buscaMedicoPeloNome(nome);
 
-                        System.out.println("\nDatas disponiveis: \n");
-                        medico.getAgenda().mostrarDatasDisponiveis();
+                        System.out.println("\n==== Datas Disponiveis ====\n");
+                        for(LocalDateTime data: medico.getAgenda().getListaDatasDisponiveis()){
+                            System.out.println("\n"+data.toLocalDate() + " : " + data.toLocalTime()+"\n");
+                        }
+                        System.out.println("\n==========\n");
 
                         LocalDateTime dataDesejada;
 
@@ -267,10 +282,15 @@ public class ClinicaMedica {
                     }
                     catch (NumberFormatException e) {
                         System.out.println("\nInformacoes de data e hora devem ser numericos: "+e.getMessage());
+                    } catch (DataException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                    catch(DateTimeException ex){
+                        System.out.println("\n Datas invalida: "+ ex.getMessage());
                     }
                                         
-
                     break;
+
                 case 6:
                     try {
                     System.out.println("Nome do medico: ");
@@ -289,8 +309,12 @@ public class ClinicaMedica {
                     System.out.println("Diagnostico e observacoes: ");
                     String diagnostico = sc.nextLine();
                     
-                    System.out.println("Medicamentos disponiveis: ");
-                    clinica.mostrarListaMedicamentos();
+                    System.out.println("\n==== Medicamentos Disponiveis ====\n");
+                    for(Medicamento medicamento: clinica.getListaMedicamentos()){
+                        System.out.println("\n"+medicamento.toString()+"\n");
+                    }
+                    System.out.println("\n==========\n");
+                    
                     System.out.println("\nNome do medicamento: ");
                     nome = sc.nextLine();
                     Medicamento medicamento1 = clinica.buscaMedicamentoPeloNome(nome);
@@ -310,14 +334,62 @@ public class ClinicaMedica {
                     minuto = sc.nextLine();
                     LocalDateTime dataRealizada = LocalDateTime.of(Integer.parseInt(ano), Integer.parseInt(mes), Integer.parseInt(dia), Integer.parseInt(hora), Integer.parseInt(minuto));
                     
+                    System.out.println("\nHouve alguma doenca sobre o paciente?\n");
+                    System.out.println("\n1. sim");
+                    System.out.println("\n2. nao");
+                    int houveDoenca = Integer.parseInt(sc.nextLine());
+                    if(houveDoenca == 1){
+                        System.out.println("\nNome da doenca: ");
+                        nomeDoenca = sc.nextLine();
+                        boolean isDoencaExisteMedico = medico.doencaExiste(nomeDoenca);
+                        boolean isDoencaExistePaciente = paciente.doencaExiste(nomeDoenca);
+                        if(isDoencaExisteMedico){
+                            //incremente doenca medico
+                            Doenca doencaMedico = medico.buscaDoencaPeloNome(nomeDoenca);
+                            medico.incrementaDoenca(doencaMedico);
+                        }else{
+                            //cadastra doenca medico
+                            System.out.println("\n Voce nunca havia tratado dessa doenca antes");
+                            System.out.println("\n Favor cadastrar estas informacoes a respeito dessa doenca para incluir em seu historico");
+                            System.out.println("tipo: ");
+                            tipo = sc.nextLine();
+                            System.out.println("grau: ");
+                            grau = sc.nextLine();
+                            Doenca doencaMedico;
+                            doencaMedico = new Doenca(nomeDoenca, tipo, grau, 1);
+                            medico.adicionaDoenca(doencaMedico);
+                            System.out.println("\nDoenca Cadastrada com sucesso!");
+                        }
+                        if(isDoencaExistePaciente){
+                            //incremente doenca paciente
+                            Doenca doencaPaciente = medico.buscaDoencaPeloNome(nomeDoenca);
+                            paciente.incrementaDoenca(doencaPaciente);
+                        }else{
+                            //cadastra doenca paciente
+                            System.out.println("\n Este paciente nunca havia tido essa doenca antes");
+                            System.out.println("\n Favor cadastrar estas informacoes a respeito dessa doenca para incluir no historico");
+                            System.out.println("tipo: ");
+                            tipo = sc.nextLine();
+                            System.out.println("grau: ");
+                            grau = sc.nextLine();
+                            Doenca doencaPaciente;
+                            doencaPaciente = new Doenca(nomeDoenca, tipo, grau, 1);
+                            paciente.adicionaDoenca(doencaPaciente);
+                            System.out.println("\nDoenca Cadastrada com sucesso!");
+                        }
+                    }
+                    
                     medico.registrarConsultaRealizada(paciente, dataRealizada, bpm, pressao, temperatura, diagnostico, listaMedicamentosPreescritos);
                     
-                    System.out.println("\nConsulta registrada com sucesso");
+                    System.out.println("\nConsulta registrada com sucesso!");
                 } catch (NullPointerException e) {
                         System.out.println("\n Valores nulos foram encontrados: "+ e.getMessage());
                 }
                 catch (NumberFormatException e) {
                     System.out.println("\n Valores numericos para datas: "+ e.getMessage());
+                }
+                catch(DateTimeException ex){
+                    System.out.println("\n Datas invalida: "+ ex.getMessage());
                 }
                     
                     break;
@@ -359,42 +431,48 @@ public class ClinicaMedica {
                     }
                     break;
                     
-                case 11: //rever este case -> nao esta funcionando
+                case 11:
                     try {
-                    System.out.println("Nome do medico: ");
-                    nome = sc.nextLine();
-                    medico = clinica.buscaMedicoPeloNome(nome);
-                    medico.mostrarDataConsultasRealizadas();
-                    System.out.println("Informe uma data de inicio: ");
-                    System.out.println("dia: ");
-                    dia = sc.nextLine();
-                    System.out.println("mes: ");
-                    mes = sc.nextLine();
-                    System.out.println("ano: ");
-                    ano = sc.nextLine();
-                    System.out.println("hora: ");
-                    hora = sc.nextLine();
-                    System.out.println("minuto: ");
-                    minuto = sc.nextLine();
-                    dataInicio = LocalDateTime.of(Integer.parseInt(ano), Integer.parseInt(mes), Integer.parseInt(dia), Integer.parseInt(hora), Integer.parseInt(minuto));
-                    System.out.println("Informe uma data de data fim: ");
-                    System.out.println("dia: ");
-                    dia = sc.nextLine();
-                    System.out.println("mes: ");
-                    mes = sc.nextLine();
-                    System.out.println("ano: ");
-                    ano = sc.nextLine();
-                    System.out.println("hora: ");
-                    hora = sc.nextLine();
-                    System.out.println("minuto: ");
-                    minuto = sc.nextLine();
-                    dataFim = LocalDateTime.of(Integer.parseInt(ano), Integer.parseInt(mes), Integer.parseInt(dia), Integer.parseInt(hora), Integer.parseInt(minuto));
-                    //nao esta funcionando
-                    System.out.println("\n====RELATORIO MEDICO - CONSULTAS REGISTRADAS====\n");
-                    for(RegistroConsulta p: medico.getFaixaRegistros(dataInicio, dataFim)){
-                        p.mostrarRegistroRealizadoParaMedico();
-                    }
-                    System.out.println("\n========\n");
+                        System.out.println("Nome do medico: ");
+                        nome = sc.nextLine();
+                        medico = clinica.buscaMedicoPeloNome(nome);
+
+                        System.out.println("\n====CONSULTAS JA REALIZADAS====\n"); //apenas as datas
+                        for(RegistroConsulta registro: medico.getListaRegistroConsultas()){
+                            System.out.println("\n"+registro.getDataConsulta().toLocalDate() + " : " + registro.getDataConsulta().toLocalTime()+"\n");
+                        }
+                        System.out.println("\n========\n");
+
+                        System.out.println("Informe uma data de inicio: ");
+                        System.out.println("dia: ");
+                        dia = sc.nextLine();
+                        System.out.println("mes: ");
+                        mes = sc.nextLine();
+                        System.out.println("ano: ");
+                        ano = sc.nextLine();
+                        System.out.println("hora: ");
+                        hora = sc.nextLine();
+                        System.out.println("minuto: ");
+                        minuto = sc.nextLine();
+                        dataInicio = LocalDateTime.of(Integer.parseInt(ano), Integer.parseInt(mes), Integer.parseInt(dia), Integer.parseInt(hora), Integer.parseInt(minuto));
+                        System.out.println("Informe uma data de data fim: ");
+                        System.out.println("dia: ");
+                        dia = sc.nextLine();
+                        System.out.println("mes: ");
+                        mes = sc.nextLine();
+                        System.out.println("ano: ");
+                        ano = sc.nextLine();
+                        System.out.println("hora: ");
+                        hora = sc.nextLine();
+                        System.out.println("minuto: ");
+                        minuto = sc.nextLine();
+                        dataFim = LocalDateTime.of(Integer.parseInt(ano), Integer.parseInt(mes), Integer.parseInt(dia), Integer.parseInt(hora), Integer.parseInt(minuto));
+                        System.out.println("\n====RELATORIO MEDICO - CONSULTAS REGISTRADAS====\n");
+                        ArrayList<RegistroConsulta> arrayConsultas = medico.getFaixaRegistros(dataInicio, dataFim);
+                        for(RegistroConsulta p: arrayConsultas){
+                            System.out.println("\n"+p.getRegistroRealizadoParaMedico()+"\n");
+                        }
+                        System.out.println("\n========\n");
                     } catch (NullPointerException e) {
                             System.out.println("\nMedico nao encontrado: "+ e.getMessage());
                     }
@@ -448,14 +526,24 @@ public class ClinicaMedica {
                         System.out.println("\nValores de data deve ser numerico: "+ e.getMessage());
                     }catch(NullPointerException e){
                         System.out.println("\nMedico nao encontrado: "+ e.getMessage());
+                    } catch (DataException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                    catch(DateTimeException ex){
+                        System.out.println("\n Datas invalida: "+ ex.getMessage());
                     }
                     break;
+
                 case 14:
                     try {
                         System.out.println("Nome do medico: ");
                         nome = sc.nextLine();
                         medico = clinica.buscaMedicoPeloNome(nome);
-                        medico.getAgenda().mostrarDatasDisponiveis();
+                        System.out.println("\n==== Datas Disponiveis ====\n");
+                        for(LocalDateTime data: medico.getAgenda().getListaDatasDisponiveis()){
+                            System.out.println("\n"+data.toLocalDate() + " : " + data.toLocalTime()+"\n");
+                        }
+                        System.out.println("\n==========\n");
                     } catch (NullPointerException e) {
                         System.out.println("\nMedico nao encontrado: "+ e.getMessage());
                     }
@@ -463,7 +551,9 @@ public class ClinicaMedica {
                     
                 case 15:
                     System.out.println("\n====LISTA MEDICAMENTOS====\n");
-                    clinica.mostrarListaMedicamentos();
+                    for(Medicamento medicamento: clinica.getListaMedicamentos()){
+                        System.out.println("\n"+medicamento.toString()+"\n");
+                    }
                     System.out.println("\n==========\n");
                     break;
                     
@@ -472,9 +562,29 @@ public class ClinicaMedica {
                         System.out.println("Nome do paciente: ");
                         nome = sc.nextLine();
                         paciente = clinica.buscaPacientePeloNome(nome);
+                        
+                        System.out.println("\n====SUAS DOENCAS====\n");
+                        for(Doenca doenc: paciente.getHistoricoDoencas()){
+                            System.out.println("\n: "+ doenc.getNomeDoenca());
+                        }
+                        System.out.println("\n==========\n");
+                        System.out.println("\n==Digite o nome de uma nova doenca para cadastra-la\n");
+                        System.out.println("\n==Digite o nome de uma doenca já existente para incrementar suas ocorrencias\n");
 
                         System.out.println("nome: ");
                         nomeDoenca = sc.nextLine();
+                        
+                        boolean isDoencaExiste = paciente.doencaExiste(nomeDoenca);
+                        if(isDoencaExiste){
+                            Doenca doencaExistente = paciente.buscaDoencaPeloNome(nomeDoenca);
+                            paciente.incrementaDoenca(doencaExistente);
+                            System.out.println("\nDoenca incrementada com sucesso");
+                            break;
+                        }
+                        
+                        System.out.println("\nInsira estas outras informacoes para cadastrar uma nova doenca\n");
+                        
+                        
                         System.out.println("tipo: ");
                         tipo = sc.nextLine();
                         System.out.println("grau: ");
@@ -483,11 +593,7 @@ public class ClinicaMedica {
                         qtd_vezes = sc.nextLine();
                         Doenca doencaPaciente;
                         doencaPaciente = new Doenca(nomeDoenca, tipo, grau, Integer.parseInt(qtd_vezes));
-
-                        boolean doencaJaExiste = paciente.incrementaDoenca(doencaPaciente);
-                        if(doencaJaExiste == false){
-                            paciente.adicionaDoenca(doencaPaciente);
-                        }
+                        paciente.adicionaDoenca(doencaPaciente);
                     } catch (NullPointerException e) {
                         System.out.println("\nPaciente nao encontrado: "+ e.getMessage());
                     }
@@ -496,7 +602,8 @@ public class ClinicaMedica {
                     }
                     break;
                     
-                case 17: //melhorar toString aqui -> mostrar apenas o que e relevante para paciente
+                case 17:
+                    try {
                     System.out.println("Nome do paciente: ");
                     nome = sc.nextLine();
                     paciente = clinica.buscaPacientePeloNome(nome);
@@ -529,18 +636,28 @@ public class ClinicaMedica {
                     listaRegistrosPaciente = clinica.getRelatorioPaciente(paciente, dataInicio, dataFim);
                     System.out.println("\n=====RELATORIO REGISTRO CONSULTAS PACIENTE====\n");
                     for(RegistroConsulta registro: listaRegistrosPaciente){
-                        System.out.println(registro.toString());
+                        System.out.println("\n"+ registro.getRegistroRealizadoParaPaciente());
                     }
                     System.out.println("\n=========\n");
+                    } catch (NullPointerException ex) {
+                        System.out.println("\n Paciente nao encontrado: "+ ex.getMessage());
+                    }
+                    catch(NumberFormatException ex){
+                        System.out.println("\n Datas deve ser numerica: "+ ex.getMessage());
+                    }
+                    catch(DateTimeException ex){
+                        System.out.println("\n Datas invalida: "+ ex.getMessage());
+                    }
                     break;
                     
                 case 18:
                     listaTodosMedicos = clinica.getListaMedicos();
                     for(Medico med: listaTodosMedicos){
                         ArrayList<RegistroConsulta> listaConsultasPorMedico = med.getListaRegistroConsultas();
-                        System.out.println("\nRELATORIO REGISTRO CONSULTAS PARA CLINICA=====\n");
+                        System.out.println("\n=====RELATORIO REGISTRO CONSULTAS PARA CLINICA=====\n");
                         for(RegistroConsulta registro: listaConsultasPorMedico){
-                            registro.mostrarRegistroRealizadoParaClinia();
+                            
+                            System.out.println("\n"+ registro.getRegistroRealizadoParaClinia() +"\n");
                         }
                         System.out.println("\n=========\n");
                     }
@@ -550,11 +667,84 @@ public class ClinicaMedica {
                     listaTodosMedicos = clinica.getListaMedicos();
                     for(Medico med: listaTodosMedicos){
                         ArrayList<ConsultasAgendadas> listaConsultasPorMedico = med.getListaConsultasAgendadas();
-                        System.out.println("\nRELATORIO CONSULTAS AGENDADAS PARA CLINICA=====\n");
+                        System.out.println("\n=====RELATORIO CONSULTAS AGENDADAS PARA CLINICA=====\n");
                         for(ConsultasAgendadas consulta: listaConsultasPorMedico){
+                            System.out.println("\nMedico: "+ med.getNome()+ "\n");
                             System.out.println(consulta.toString());
                         }
                         System.out.println("\n========\n");
+                    }
+                    break;
+                case 20: //nao pegar uma faixa de datas mas sim uma unica data
+                    //percorrer lista de registros do medico -> verificar pela data e nome do paciente
+                    try {
+                        System.out.println("\nNome do medico:");
+                        nome = sc.nextLine();
+                        medico = clinica.buscaMedicoPeloNome(nome);
+                        System.out.println("Nome do paciente: ");
+                        nome = sc.nextLine();
+                        paciente = clinica.buscaPacientePeloNome(nome);
+                        System.out.println("Informe uma data de inicio: ");
+                        System.out.println("dia: ");
+                        dia = sc.nextLine();
+                        System.out.println("mes: ");
+                        mes = sc.nextLine();
+                        System.out.println("ano: ");
+                        ano = sc.nextLine();
+                        System.out.println("hora: ");
+                        hora = sc.nextLine();
+                        System.out.println("minuto: ");
+                        minuto = sc.nextLine();
+                        dataInicio = LocalDateTime.of(Integer.parseInt(ano), Integer.parseInt(mes), Integer.parseInt(dia), Integer.parseInt(hora), Integer.parseInt(minuto));
+                        System.out.println("Informe uma data de data fim: ");
+                        System.out.println("dia: ");
+                        dia = sc.nextLine();
+                        System.out.println("mes: ");
+                        mes = sc.nextLine();
+                        System.out.println("ano: ");
+                        ano = sc.nextLine();
+                        System.out.println("hora: ");
+                        hora = sc.nextLine();
+                        System.out.println("minuto: ");
+                        minuto = sc.nextLine();
+                        dataFim = LocalDateTime.of(Integer.parseInt(ano), Integer.parseInt(mes), Integer.parseInt(dia), Integer.parseInt(hora), Integer.parseInt(minuto));
+
+                        ArrayList<RegistroConsulta> listaRegistrosDePaciente;
+                        listaRegistrosDePaciente = medico.getHistoricoConsultasPorPaciente(paciente, dataInicio, dataFim);
+                        System.out.println("\n=====REGISTRO CONSULTAS DE "+ paciente.getNome() +"======\n");
+                        for(RegistroConsulta registro: listaRegistrosDePaciente){
+                            System.out.println("\n"+ registro.getRegistroRealizadoDePacienteParaMedico());
+                        }
+                        System.out.println("\n=========\n");
+                    } catch (NullPointerException e) {
+                            System.out.println("\nMedico e/ou Paciente nao encontrados: "+ e.getMessage());
+                    }
+                    catch(NumberFormatException e){
+                        System.out.println("\nValores de datas devem ser numericos: "+ e.getMessage());
+                    }
+                    catch(DateTimeException ex){
+                        System.out.println("\n Datas invalida: "+ ex.getMessage());
+                    }
+                    break;
+                    
+                case 21:
+                    try {
+                        System.out.println("Nome do medico: ");
+                        nome = sc.nextLine();
+                        medico = clinica.buscaMedicoPeloNome(nome);
+                        System.out.println("Nome do paciente: ");
+                        nome = sc.nextLine();
+                        paciente = clinica.buscaPacientePeloNome(nome);
+                        System.out.println("\n====CONSULTAS AGENDADAS====\n");
+                        for(ConsultasAgendadas cons : medico.getListaConsultasAgendadas()){
+                            if(cons.getPac().getNome().equals(paciente.getNome())){
+                                System.out.println("\nData: " + cons.getData().toLocalDate() + " : "+ cons.getData().toLocalTime());
+                            }
+                        }
+                        System.out.println("\n=========\n");
+                        
+                    } catch (Exception e) {
+                        System.out.println("\nPaciente e/ou Medico nao encontrado"+ e.getMessage());
                     }
                     break;
             }

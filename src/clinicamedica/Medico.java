@@ -52,7 +52,7 @@ public class Medico extends Pessoa {
     
     @Override
     public String toString() {
-        return super.toString()+ "\n Medico{" + "especialidade=" + especialidade + ", listaConvenios=" + listaConvenios + '}';
+        return super.toString()+ "\n Medico{" + "especialidade=" + especialidade + ", listaConvenios=" + listaConvenios + ", listaDoencas=" + listaDoencas + '}';
     }
     
 //    CONVENIO
@@ -77,19 +77,34 @@ public class Medico extends Pessoa {
     
 //    DOENCA
     
-    public void addDoenca(Doenca a){
+    public void adicionaDoenca(Doenca a){
         this.listaDoencas.add(a);
     }
     
-    public boolean incrementaDoenca(Doenca a){
+    public void incrementaDoenca(Doenca a){
         for(Doenca doenca: this.listaDoencas){
-            if(a.equals(doenca)){
+            if(a.getNomeDoenca().equals(doenca.getNomeDoenca())){
                 doenca.incrementaOcorrencia();
+            }
+        }
+    }
+    
+    public boolean doencaExiste(String a){
+        for(Doenca doenca: this.listaDoencas){
+            if(a.equals(doenca.getNomeDoenca())){
                 return true;
             }
         }
-        
-        return false; //dai cria uma nova doenca no array de doencas do medico
+        return false;
+    }
+    
+    public Doenca buscaDoencaPeloNome(String a){
+        for(Doenca doenca: this.listaDoencas){
+            if(a.equals(doenca.getNomeDoenca())){
+                return doenca;
+            }
+        }
+        return null;
     }
     
 //    REGISTRO CONSULTAS
@@ -108,12 +123,6 @@ public class Medico extends Pessoa {
         }
         
         return listaConsultas;
-    }
-    
-    public void mostrarDataConsultasRealizadas(){
-        for(RegistroConsulta registro: listaRegistroConsultas){
-            System.out.println("\n"+registro.getDataConsulta().toLocalDate() + " : " + registro.getDataConsulta().toLocalTime()+"\n");
-        }
     }
     
     public void registrarConsultaRealizada(Paciente pac, LocalDateTime data, String bpm, String pressao, String temperatura, String diagnostico, ArrayList<Medicamento> listaMedicamentos){

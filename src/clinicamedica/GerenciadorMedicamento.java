@@ -9,8 +9,6 @@ package clinicamedica;
  * @author lucas
  */
 public interface GerenciadorMedicamento {
-    public void mostrarListaMedicamentos();
-    
     public void cadastraMedicamento(Medicamento a);
     
     public Medicamento buscaMedicamentoPeloNome(String nome);

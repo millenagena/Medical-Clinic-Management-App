@@ -13,7 +13,6 @@ import java.util.ArrayList;
  */
 public class Agenda {
     private ArrayList <LocalDateTime> listaDatasDisponiveis = new ArrayList();
-    private ArrayList <LocalDateTime> listaDatasIndisponiveis = new ArrayList();
     
     public Agenda(ArrayList <LocalDateTime> datasDisponiveis) {
         this.listaDatasDisponiveis = datasDisponiveis;
@@ -24,11 +23,11 @@ public class Agenda {
         this.listaDatasDisponiveis = datasIndisponiveis;
     }
 
-    
-    
-    
-    public void adicionarDataDisponivel(LocalDateTime data){
-        //tratar data quando chamar este metodo
+    public void adicionarDataDisponivel(LocalDateTime data) throws DataException {
+        LocalDateTime currentDate = LocalDateTime.now();
+        if(data.isBefore(currentDate)){
+            throw new DataException("\nData invalida");
+        }
         this.listaDatasDisponiveis.add(data);
         System.out.println("\nData adicionada");
     }
@@ -37,9 +36,7 @@ public class Agenda {
         //tratar data desejada
         for(LocalDateTime data: this.listaDatasDisponiveis){
             if(data.isEqual(dataDesejada)){
-                this.listaDatasIndisponiveis.add(data);
                 this.listaDatasDisponiveis.remove(data);
-                System.out.println("\n Data agendada com sucesso para o dia: "+ dataDesejada.toLocalDate() + " : " + dataDesejada.toLocalTime());
                 return true;
             }
         }
@@ -50,22 +47,13 @@ public class Agenda {
         return listaDatasDisponiveis;
     }
     
-    public void mostrarDatasDisponiveis(){
-        for(LocalDateTime data: this.listaDatasDisponiveis){
-            System.out.println("\n"+ data.toLocalDate() + " : " + data.toLocalTime()+ "\n");
-        }
-    }
-
-    public ArrayList<LocalDateTime> getListaDatasIndisponiveis() {
-        return listaDatasIndisponiveis;
-    }
     
     @Override
     public String toString() {
-        return "Agenda{" + "listaDatasDisponiveis=" + listaDatasDisponiveis + ", listaDatasIndisponiveis=" + listaDatasIndisponiveis + '}';
+        return "Agenda{" + "listaDatasDisponiveis=" + listaDatasDisponiveis + '}';
     }
     
     public String toArquivo(){
-        return listaDatasDisponiveis + "-" + listaDatasIndisponiveis;
+        return "listaDatasDisponiveis=" + listaDatasDisponiveis;
     }
 }

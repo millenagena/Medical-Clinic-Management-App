@@ -11,5 +11,5 @@ import java.time.LocalDateTime;
  * @author lucas
  */
 public interface GerenciadorClinica {
-    public void agendarConsulta(Medico med, Paciente pac, LocalDateTime data);
+    public void agendarConsulta(Medico med, Paciente pac, LocalDateTime data) throws DataException ;
 }

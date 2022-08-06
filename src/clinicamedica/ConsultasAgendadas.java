@@ -11,22 +11,12 @@ import java.time.LocalDateTime;
  * @author lucas
  */
 public class ConsultasAgendadas {
-    private Medico med;
     private Paciente pac;
     private LocalDateTime data;
 
-    public ConsultasAgendadas(Medico med, Paciente pac, LocalDateTime data) {
-        this.med = med;
+    public ConsultasAgendadas(Paciente pac, LocalDateTime data) {
         this.pac = pac;
         this.data = data;
-    }
-
-    public Medico getMed() {
-        return med;
-    }
-
-    public void setMed(Medico med) {
-        this.med = med;
     }
 
     public Paciente getPac() {
@@ -47,7 +37,7 @@ public class ConsultasAgendadas {
 
     @Override
     public String toString() {
-        return "\nConsultasAgendadas{" + "med=" + med.getNome() + ", pac=" + pac.getNome() + ", data=" + data.toLocalDate() + " : " + data.toLocalTime() + '}';
+        return "\n Consultas Agendadas: \n" + "paciente: " + pac.getNome() + ", data: " + data.toLocalDate() + " : " + data.toLocalTime();
     }
     
 }
