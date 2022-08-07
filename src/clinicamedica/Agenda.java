@@ -23,6 +23,10 @@ public class Agenda {
         this.listaDatasDisponiveis = datasDisponiveis;
     }
 
+    public void setListaDatasDisponiveis(ArrayList<LocalDateTime> listaDatasDisponiveis) {
+        this.listaDatasDisponiveis = listaDatasDisponiveis;
+    }
+    
     public void adicionarDataDisponivel(LocalDateTime data) throws DataException {
         LocalDateTime currentDate = LocalDateTime.now();
         if(data.isBefore(currentDate)){

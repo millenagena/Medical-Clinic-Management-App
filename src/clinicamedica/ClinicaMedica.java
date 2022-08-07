@@ -4,10 +4,13 @@
  */
 package clinicamedica;
 
+import java.io.FileNotFoundException;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,30 +25,55 @@ public class ClinicaMedica {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-//        LocalDateTime diaMesAnoHoraMin = LocalDateTime.now();
-//        System.out.println(diaMesAnoHoraMin);
-//        
-//        LocalDateTime teste1 = LocalDateTime.of(2023, 04, 22, 16, 30);
-//        LocalDateTime teste2 = LocalDateTime.of(2023, 04, 22, 17, 30);
-//        System.out.println(teste1.toLocalDate() + " : " + teste1.toLocalTime());
-//        //String.format("foo %s:%s", param1, param2)
-//        System.out.println(teste1.isAfter(diaMesAnoHoraMin));        
-        
-//        ArrayList<ConsultasAgendadas> listaConsultas = med1.getListaConsultasAgendadas();
-//        for(ConsultasAgendadas a: listaConsultas){
-//            System.out.println(a.toString());
-//        }
-//                
-//        ArrayList<RegistroConsulta> listaRegistros = med1.getListaRegistroConsultas();
-//        for(RegistroConsulta b: listaRegistros){
-//            System.out.println(b.toString());
-//        }
-        
         Scanner sc = new Scanner(System.in);
         int op = -1;
 
-        Medicamento testemedica = new Medicamento("penetro", "azul", 4, 0, "respiratorio", "sinusite, nausea");
-        clinica.cadastraMedicamento(testemedica);
+        ArrayList<Medicamento> listaMedicamentos = new ArrayList<>();
+        try {
+            listaMedicamentos = Arquivos.importaMedicamento("medicamentos.txt");
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
+        for(Medicamento medicamento: listaMedicamentos){
+            clinica.cadastraMedicamento(medicamento);
+        }
+        
+        
+        ArrayList<LocalDateTime> listaDatas = new ArrayList<>();
+        try {
+            listaDatas = Arquivos.importaDatas("datas.txt");
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        ArrayList<Medico> listaMedicos = new ArrayList<>();
+        try {
+            listaMedicos = Arquivos.importaMedicos("medicos.txt");
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        Agenda agendaInicial = null;
+        try {
+            agendaInicial = new Agenda(listaDatas);
+                for(Medico me: listaMedicos){
+                clinica.cadastrarMedico(me);
+                me.setAgenda(agendaInicial);
+            }
+        } catch (DataException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        ArrayList<Paciente> listaPacientes = new ArrayList<>();
+        try {
+            listaPacientes = Arquivos.importaPacientes("pacientes.txt");
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
+        for(Paciente paciente: listaPacientes){
+            clinica.cadastrarPaciente(paciente);
+        }
+        
         
         while(op != 30){
             System.out.println("=== CLINICA MEDICA ===");
@@ -146,7 +174,7 @@ public class ClinicaMedica {
                         
                         d = LocalDateTime.of(Integer.parseInt(ano), Integer.parseInt(mes), Integer.parseInt(dia), Integer.parseInt(hora), Integer.parseInt(minuto));
                         
-                        System.out.println("Data inserida: "+ d.toString());
+                        System.out.println("Data final: "+ d.toString());
                         datasDisponiveis.add(d);
                     }
                     

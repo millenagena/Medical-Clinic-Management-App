@@ -25,6 +25,15 @@ public class Medico extends Pessoa {
         this.agenda = agenda;
     }
     
+    public Medico(String especialidade, String nome, String cpf, int idade, String rg, String telefone, String email) {
+        super(nome, cpf, idade, rg, telefone, email);
+        this.especialidade = especialidade;
+    }
+
+    public void setAgenda(Agenda agenda) {
+        this.agenda = agenda;
+    }
+
     public Agenda getAgenda() {
         return agenda;
     }
@@ -132,7 +141,6 @@ public class Medico extends Pessoa {
                 data = c.getData();
                 c.setIsRealizada(true);
             }
-            //criar um consulta exception e lancar ela aqui caso nao ache uma consulta
         }
         if(data == null){
             throw new ConsultaException("\n Consulta nao encontrada, talvez nao haja consultas agendadas");
@@ -146,13 +154,6 @@ public class Medico extends Pessoa {
         }
     }
     
-    //deletar este metodo
-//    public void registrarConsultaRealizada(Paciente pac, LocalDateTime data, String bpm, String pressao, String temperatura, String diagnostico){
-//        RegistroConsulta consultaRealizada = new RegistroConsulta(pac.getNome(), super.getNome(), this.especialidade, data, bpm, pressao,temperatura, diagnostico);
-//        this.listaRegistroConsultas.add(consultaRealizada);
-//    }
-    
-    //tentar usar este metodo
     public void registrarConsultaRealizada(Paciente pac, String bpm, String pressao, String temperatura, String diagnostico) throws ConsultaException {
         LocalDateTime data = null;
         for(ConsultasAgendadas c: this.listaConsultasAgendadas){
@@ -160,7 +161,6 @@ public class Medico extends Pessoa {
                 data = c.getData();
                 c.setIsRealizada(true);
             }
-            //criar um consulta exception e lancar ela aqui caso nao ache uma consulta
         }
         if(data == null){
             throw new ConsultaException("\n Consulta nao encontrada, talvez nao haja consultas agendadas");
@@ -192,5 +192,5 @@ public class Medico extends Pessoa {
     public String toCsv(){
         return super.getNome() + ";" +  super.getCpf() + ";" +  super.getIdade() + ";" + super.getRg();
     }
-    
+
 }
