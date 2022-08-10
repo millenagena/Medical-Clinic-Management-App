@@ -15,10 +15,12 @@ public class Medico extends Pessoa {
     private String especialidade;
     private ArrayList <String> listaConvenios = new ArrayList();
     private ArrayList <RegistroConsulta> listaRegistroConsultas = new ArrayList();
-    private ArrayList <ConsultasAgendadas> listaConsultasAgendadas = new ArrayList();
+    private ArrayList <ConsultaAgendada> listaConsultasAgendadas = new ArrayList();
     private Agenda agenda;
-    private ArrayList <Doenca> listaDoencas = new ArrayList();
-
+    
+    private GerenciadorDoenca gDoenca = new GerenciadorDoenca();
+    
+    
     public Medico(String especialidade, String nome, String cpf, int idade, String rg, String telefone, String email, Agenda agenda) {
         super(nome, cpf, idade, rg, telefone, email);
         this.especialidade = especialidade;
@@ -29,6 +31,14 @@ public class Medico extends Pessoa {
         super(nome, cpf, idade, rg, telefone, email);
         this.especialidade = especialidade;
     }
+    
+    public GerenciadorDoenca getgDoenca() {
+        return gDoenca;
+    }
+
+    public void setgDoenca(GerenciadorDoenca gDoenca) {
+        this.gDoenca = gDoenca;
+    }
 
     public void setAgenda(Agenda agenda) {
         this.agenda = agenda;
@@ -36,14 +46,6 @@ public class Medico extends Pessoa {
 
     public Agenda getAgenda() {
         return agenda;
-    }
-
-    public ArrayList<Doenca> getListaDoencas() {
-        return listaDoencas;
-    }
-
-    public void setListaDoencas(ArrayList<Doenca> listaDoencas) {
-        this.listaDoencas = listaDoencas;
     }
 
     public String getEspecialidade() {
@@ -61,7 +63,7 @@ public class Medico extends Pessoa {
     
     @Override
     public String toString() {
-        return super.toString()+ "\n Medico{" + "especialidade=" + especialidade + ", listaConvenios=" + listaConvenios + ", listaDoencas=" + listaDoencas + '}';
+        return super.toString()+ "\n Medico{" + "\nespecialidade: " + especialidade + "\nlistaConvenios: " + listaConvenios + "\nlistaDoencas: " + this.getgDoenca().getHistoricoDoencas() + '}';
     }
     
 //    CONVENIO
@@ -84,38 +86,6 @@ public class Medico extends Pessoa {
         System.out.println("\n Convenio nao encontrado");
     }
     
-//    DOENCA
-    
-    public void adicionaDoenca(Doenca a){
-        this.listaDoencas.add(a);
-    }
-    
-    public void incrementaDoenca(Doenca a){
-        for(Doenca doenca: this.listaDoencas){
-            if(a.getNomeDoenca().equals(doenca.getNomeDoenca())){
-                doenca.incrementaOcorrencia();
-            }
-        }
-    }
-    
-    public boolean doencaExiste(String a){
-        for(Doenca doenca: this.listaDoencas){
-            if(a.equals(doenca.getNomeDoenca())){
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    public Doenca buscaDoencaPeloNome(String a){
-        for(Doenca doenca: this.listaDoencas){
-            if(a.equals(doenca.getNomeDoenca())){
-                return doenca;
-            }
-        }
-        return null;
-    }
-    
 //    REGISTRO CONSULTAS
 
     public ArrayList<RegistroConsulta> getListaRegistroConsultas() {
@@ -136,7 +106,7 @@ public class Medico extends Pessoa {
     
     public void registrarConsultaRealizada(Paciente pac, String bpm, String pressao, String temperatura, String diagnostico, ArrayList<Medicamento> listaMedicamentos) throws ConsultaException {
         LocalDateTime data = null;
-        for(ConsultasAgendadas c: this.listaConsultasAgendadas){
+        for(ConsultaAgendada c: this.listaConsultasAgendadas){
             if(c.getPac().getNome().equals(pac.getNome())){
                 data = c.getData();
                 c.setIsRealizada(true);
@@ -156,7 +126,7 @@ public class Medico extends Pessoa {
     
     public void registrarConsultaRealizada(Paciente pac, String bpm, String pressao, String temperatura, String diagnostico) throws ConsultaException {
         LocalDateTime data = null;
-        for(ConsultasAgendadas c: this.listaConsultasAgendadas){
+        for(ConsultaAgendada c: this.listaConsultasAgendadas){
             if(c.getPac().getNome().equals(pac.getNome())){
                 data = c.getData();
                 c.setIsRealizada(true);
@@ -172,7 +142,7 @@ public class Medico extends Pessoa {
     
 //    CONSULTAS AGENDADAS
     
-    public ArrayList<ConsultasAgendadas> getListaConsultasAgendadas() {
+    public ArrayList<ConsultaAgendada> getListaConsultasAgendadas() {
         return listaConsultasAgendadas;
     }
 
@@ -189,8 +159,4 @@ public class Medico extends Pessoa {
         return listaConsultas;
     }
     
-    public String toCsv(){
-        return super.getNome() + ";" +  super.getCpf() + ";" +  super.getIdade() + ";" + super.getRg();
-    }
-
 }

@@ -59,7 +59,7 @@ public class Doenca {
 
     @Override
     public String toString() {
-        return "Doenca{" + "nomeDoenca=" + nomeDoenca + ", tipo=" + tipo + ", grau=" + grau + ", ocorrencias=" + ocorrencias + '}';
+        return "Doenca{" + "nomeDoenca: " + nomeDoenca + "\ntipo: " + tipo + "\ngrau: " + grau + "\nocorrencias: " + ocorrencias + '}';
     }
     
     

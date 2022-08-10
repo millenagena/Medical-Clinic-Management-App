@@ -1,0 +1,3 @@
+anador;azul;4;0;respiratorio;sinusite, nausea
+cataflan;azul;4;0;antibiotico;febre, nausea
+dorflex;azul;4;0;anti-alergico;sinusite, nausea

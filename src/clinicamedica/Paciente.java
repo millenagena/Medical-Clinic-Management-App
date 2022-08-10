@@ -11,54 +11,24 @@ import java.util.ArrayList;
  * @author lucas
  */
 public class Paciente extends Pessoa {
-    private ArrayList<Doenca> historicoDoencas;
+    private GerenciadorDoenca gDoenca = new GerenciadorDoenca();
 
     public Paciente(ArrayList<Doenca> historicoDoencas, String nome, String cpf, int idade, String rg, String telefone, String email) {
         super(nome, cpf, idade, rg, telefone, email);
-        this.historicoDoencas = historicoDoencas;
-    }    
-
-    public ArrayList<Doenca> getHistoricoDoencas() {
-        return historicoDoencas;
+        gDoenca.setHistoricoDoencas(historicoDoencas);
     }
 
-    public void setHistoricoDoencas(ArrayList<Doenca> historicoDoencas) {
-        this.historicoDoencas = historicoDoencas;
+    public GerenciadorDoenca getgDoenca() {
+        return gDoenca;
     }
-    
-    public void adicionaDoenca(Doenca a){
-        this.historicoDoencas.add(a);
-    }
-    
-    public void incrementaDoenca(Doenca a){
-        for(Doenca doenca: this.historicoDoencas){
-            if(a.getNomeDoenca().equals(doenca.getNomeDoenca())){
-                doenca.incrementaOcorrencia();
-            }
-        }
-    }
-    
-    public boolean doencaExiste(String a){
-        for(Doenca doenca: this.historicoDoencas){
-            if(a.equals(doenca.getNomeDoenca())){
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    public Doenca buscaDoencaPeloNome(String a){
-        for(Doenca doenca: this.historicoDoencas){
-            if(a.equals(doenca.getNomeDoenca())){
-                return doenca;
-            }
-        }
-        return null;
+
+    public void setgDoenca(GerenciadorDoenca gDoenca) {
+        this.gDoenca = gDoenca;
     }
     
     @Override
     public String toString() {
-        return super.toString() + "\n Paciente{" + "historicoDoencas=" + historicoDoencas + '}';
+        return super.toString() + "\n Paciente{" + "\nhistoricoDoencas: " + this.getgDoenca().getHistoricoDoencas() + '}';
     }
     
 }

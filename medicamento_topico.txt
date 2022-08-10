@@ -1,0 +1,3 @@
+semeticona;azul;4;0;respiratorio;sinusite, nausea
+cetoconazol;azul;4;0;antibiotico;febre, nausea
+anestesico;azul;4;0;anti-alergico;sinusite, nausea

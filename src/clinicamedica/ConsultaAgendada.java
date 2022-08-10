@@ -10,18 +10,18 @@ import java.time.LocalDateTime;
  *
  * @author lucas
  */
-public class ConsultasAgendadas {
+public class ConsultaAgendada {
     private Paciente pac;
     private LocalDateTime data;
     private boolean isRealizada;
 
-    public ConsultasAgendadas(Paciente pac, LocalDateTime data) {
+    public ConsultaAgendada(Paciente pac, LocalDateTime data) {
         this.pac = pac;
         this.data = data;
         this.isRealizada = false;
     }
     
-    public ConsultasAgendadas(Paciente pac, LocalDateTime data, boolean isRealizada) {
+    public ConsultaAgendada(Paciente pac, LocalDateTime data, boolean isRealizada) {
         this.pac = pac;
         this.data = data;
         this.isRealizada = isRealizada;

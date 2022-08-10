@@ -4,7 +4,7 @@
  */
 package clinicamedica;
 
-public class Medicamento {
+public abstract class Medicamento {
     public String nome;
     public String Faixa;
     public int quantidadeEstoque;
@@ -20,7 +20,8 @@ public class Medicamento {
         this.tipo = tipo;
         this.indicacao = indicacao;
     }
-
+    
+    
     public String getNome() {
         return nome;
     }
@@ -85,5 +86,7 @@ public class Medicamento {
     public String toString() {
         return "Medicamento{" + "\nnome: " + nome + "\nFaixa: " + Faixa  + "\ntipo: " + tipo + "\nindicacao: " + indicacao + '}';
     }
+    
+    public abstract String preescricao();
 
 }

@@ -1,0 +1,3 @@
+bezetacil;azul;4;0;respiratorio;febre, nausea
+insulina;azul;4;0;antibiotico;diabete
+morfina;azul;4;0;anti-alergico;sinusite, nausea

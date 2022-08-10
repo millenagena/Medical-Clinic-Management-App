@@ -16,7 +16,8 @@ import java.util.Scanner;
  * @author lucas
  */
 public class Arquivos {
-    public static ArrayList<Medicamento> importaMedicamento(String NomeArq) throws FileNotFoundException{
+    
+    public static ArrayList<Medicamento> importaMedicamentoOral(String NomeArq) throws FileNotFoundException{
         
         Scanner entrada = new Scanner(new File(NomeArq));
         ArrayList<Medicamento> ret = new ArrayList<>();
@@ -26,7 +27,53 @@ public class Arquivos {
             try{
                    String linha = entrada.nextLine();
                    String info[] = linha.split(";");
-                   ret.add(new Medicamento(info[0], info[1], Integer.parseInt(info[2]), Integer.parseInt(info[3]), info[4], info[5]));
+                   ret.add(new MedicamentoOral(info[0], info[1], Integer.parseInt(info[2]), Integer.parseInt(info[3]), info[4], info[5]));
+            }
+
+            catch(NoSuchElementException e){
+                System.err.println("Arquivo com formato incorreto");
+                entrada.close();
+                System.exit(1);
+            }
+        }
+        
+        return ret;
+    }
+    
+    public static ArrayList<Medicamento> importaMedicamentoInjetavel(String NomeArq) throws FileNotFoundException{
+        
+        Scanner entrada = new Scanner(new File(NomeArq));
+        ArrayList<Medicamento> ret = new ArrayList<>();
+        
+        while(entrada.hasNext()){
+        
+            try{
+                   String linha = entrada.nextLine();
+                   String info[] = linha.split(";");
+                   ret.add(new MedicamentoInjetavel(info[0], info[1], Integer.parseInt(info[2]), Integer.parseInt(info[3]), info[4], info[5]));
+            }
+
+            catch(NoSuchElementException e){
+                System.err.println("Arquivo com formato incorreto");
+                entrada.close();
+                System.exit(1);
+            }
+        }
+        
+        return ret;
+    }
+    
+    public static ArrayList<Medicamento> importaMedicamentoTopico(String NomeArq) throws FileNotFoundException{
+        
+        Scanner entrada = new Scanner(new File(NomeArq));
+        ArrayList<Medicamento> ret = new ArrayList<>();
+        
+        while(entrada.hasNext()){
+        
+            try{
+                   String linha = entrada.nextLine();
+                   String info[] = linha.split(";");
+                   ret.add(new MedicamentoTopico(info[0], info[1], Integer.parseInt(info[2]), Integer.parseInt(info[3]), info[4], info[5]));
             }
 
             catch(NoSuchElementException e){

@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author lucas
  */
-public class Clinica implements GerenciadorMedicamento, GerenciadorMedico, GerenciadorPaciente, GerenciadorClinica {
+public class Clinica implements GerenciadorMedicamento, GerenciadorMedico, GerenciadorPaciente {
     private String nome;
     private static ArrayList <Medico> listaMedicos = new ArrayList();
     private static ArrayList <Paciente> listaPacientes = new ArrayList();
@@ -111,7 +111,7 @@ public class Clinica implements GerenciadorMedicamento, GerenciadorMedico, Geren
     
     @Override
     public void atualizaHistoricoDoencaPaciente(Paciente pac, Doenca doen){
-        pac.adicionaDoenca(doen);
+        pac.getgDoenca().adicionaDoenca(doen);
     }
     
     @Override
@@ -130,7 +130,6 @@ public class Clinica implements GerenciadorMedicamento, GerenciadorMedico, Geren
     
 //    CLINICA
     
-    @Override
     public void agendarConsulta(Medico med, Paciente pac, LocalDateTime data) throws DataException {
         LocalDateTime currentDate = LocalDateTime.now();
         if(data.isBefore(currentDate)){
@@ -138,7 +137,7 @@ public class Clinica implements GerenciadorMedicamento, GerenciadorMedico, Geren
         }
         boolean isDataDisponivel = med.getAgenda().marcarAgenda(data);
         if(isDataDisponivel == true){
-            ConsultasAgendadas novaConsulta = new ConsultasAgendadas(pac, data);
+            ConsultaAgendada novaConsulta = new ConsultaAgendada(pac, data);
             med.getListaConsultasAgendadas().add(novaConsulta);
         }else{
             throw new DataException("\n Data desejada nao existe ou nao esta disponivel \n");

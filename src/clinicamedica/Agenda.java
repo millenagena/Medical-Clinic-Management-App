@@ -54,10 +54,7 @@ public class Agenda {
     
     @Override
     public String toString() {
-        return "Agenda{" + "listaDatasDisponiveis=" + listaDatasDisponiveis + '}';
+        return "Agenda{" + "listaDatasDisponiveis: " + listaDatasDisponiveis + '}';
     }
     
-    public String toArquivo(){
-        return "listaDatasDisponiveis=" + listaDatasDisponiveis;
-    }
 }
