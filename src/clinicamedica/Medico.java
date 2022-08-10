@@ -17,19 +17,20 @@ public class Medico extends Pessoa {
     private ArrayList <RegistroConsulta> listaRegistroConsultas = new ArrayList();
     private ArrayList <ConsultaAgendada> listaConsultasAgendadas = new ArrayList();
     private Agenda agenda;
-    
     private GerenciadorDoenca gDoenca = new GerenciadorDoenca();
     
     
-    public Medico(String especialidade, String nome, String cpf, int idade, String rg, String telefone, String email, Agenda agenda) {
+    public Medico(String especialidade, String nome, String cpf, int idade, String rg, String telefone, String email, Agenda agenda, ArrayList<Doenca> historicoDoencas) {
         super(nome, cpf, idade, rg, telefone, email);
         this.especialidade = especialidade;
         this.agenda = agenda;
+        gDoenca.setHistoricoDoencas(historicoDoencas);
     }
     
-    public Medico(String especialidade, String nome, String cpf, int idade, String rg, String telefone, String email) {
+    public Medico(String especialidade, String nome, String cpf, int idade, String rg, String telefone, String email, ArrayList<Doenca> historicoDoencas) {
         super(nome, cpf, idade, rg, telefone, email);
         this.especialidade = especialidade;
+        gDoenca.setHistoricoDoencas(historicoDoencas);
     }
     
     public GerenciadorDoenca getgDoenca() {

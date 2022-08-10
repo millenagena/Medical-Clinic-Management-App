@@ -196,7 +196,7 @@ public class ClinicaMedica {
                     
                     agenda = new Agenda(datasDisponiveis);
                     
-                    medico = new Medico(especialidade, nome, cpf, Integer.parseInt(idade), rg, telefone, email, agenda);
+                    medico = new Medico(especialidade, nome, cpf, Integer.parseInt(idade), rg, telefone, email, agenda, new ArrayList<>());
                     System.out.println("\nMedico Cadastrado com sucesso");
                     System.out.println("\n"+medico.toString());
                     clinica.cadastrarMedico(medico);
@@ -372,12 +372,29 @@ public class ClinicaMedica {
                     }
                     System.out.println("\n==========\n");
                     
-                    System.out.println("\nNome do medicamento: ");
-                    nome = sc.nextLine();
-                    Medicamento medicamento1 = clinica.buscaMedicamentoPeloNome(nome);
+                    System.out.println("\nDeseja receitar algum medicamento: ");
+                    System.out.println("\n1. sim");
+                    System.out.println("\n2. nao");
                     ArrayList<Medicamento> listaMedicamentosPreescritos = new ArrayList();
-                    listaMedicamentosPreescritos.add(medicamento1);
-                  
+                    int houveMedicamento = Integer.parseInt(sc.nextLine());
+                    if(houveMedicamento == 1){
+                        System.out.println("\nQuantos: ");
+                        int quantidade = Integer.parseInt(sc.nextLine());
+                        for(int i = 1; i<=quantidade;i++){
+                            System.out.println("\nNome do medicamento: "+ i);
+                            nome = sc.nextLine();
+                            Medicamento medicamento1 = clinica.buscaMedicamentoPeloNome(nome);
+                            listaMedicamentosPreescritos.add(medicamento1);
+                        }
+                        medico.registrarConsultaRealizada(paciente, bpm, pressao, temperatura, diagnostico, listaMedicamentosPreescritos);
+                    
+                        System.out.println("\nConsulta registrada com sucesso!");
+                    }else{
+                        medico.registrarConsultaRealizada(paciente, bpm, pressao, temperatura, diagnostico);
+
+                        System.out.println("\nConsulta registrada com sucesso!");
+                    }
+                    
                     System.out.println("\nHouve alguma doenca sobre o paciente?\n");
                     System.out.println("\n1. sim");
                     System.out.println("\n2. nao");
@@ -421,13 +438,6 @@ public class ClinicaMedica {
                             paciente.getgDoenca().adicionaDoenca(doencaPaciente);
                             System.out.println("\nDoenca Cadastrada com sucesso!");
                         }
-                        medico.registrarConsultaRealizada(paciente, bpm, pressao, temperatura, diagnostico, listaMedicamentosPreescritos);
-                    
-                        System.out.println("\nConsulta registrada com sucesso!");
-                    }else{
-                        medico.registrarConsultaRealizada(paciente, bpm, pressao, temperatura, diagnostico);
-
-                        System.out.println("\nConsulta registrada com sucesso!");
                     }
                     } catch (NullPointerException e) {
                             System.out.println("\n Valores nulos foram encontrados: "+ e.getMessage());
